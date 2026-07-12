@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GOMEME — Walk-to-Earn Brainrot GO</title>
+  <meta name="description" content="GPS-коллекционная игра: лови Italian Brainrot на улице, торгуй на маркете, зарабатывай $BRAIN." />
+  <meta property="og:title" content="GOMEME — Brainrot GO" />
+  <meta property="og:description" content="Pokémon GO × Italian Brainrot. Токен $BRAIN, P2P-маркет, walk-to-earn." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06060b;
+      --bg-2: #0c0c14;
+      --card: #11111a;
+      --border: #1e1e2e;
+      --border-hi: #2d2d44;
+      --text: #f4f4f8;
+      --muted: #8b8ba3;
+      --dim: #55556a;
+      --pink: #ff3d81;
+      --pink-dim: rgba(255, 61, 129, 0.12);
+      --purple: #7c5cff;
+      --purple-dim: rgba(124, 92, 255, 0.12);
+      --green: #00e676;
+      --green-dim: rgba(0, 230, 118, 0.1);
+      --gold: #ffb300;
+      --radius: 16px;
+      --radius-lg: 24px;
+      --font: 'DM Sans', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,61,129,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,61,129,0.03) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 { top: -200px; left: -100px; background: var(--pink); }
+    .glow-2 { top: 40%; right: -200px; background: var(--purple); }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(6, 6, 11, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .logo span { color: var(--pink); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* Layout */
+    main { position: relative; z-index: 1; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 96px 0; }
+    section:first-of-type { padding-top: 140px; }
+
+    /* Hero */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--pink-dim);
+      border: 1px solid rgba(255,61,129,0.25);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--pink);
+      margin-bottom: 24px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+    h1 .grad {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(17px, 2.5vw, 20px);
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 36px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 56px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--pink); color: #fff; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-hi);
+    }
+    .btn-ghost:hover { border-color: var(--muted); }
+
+    /* Ticker */
+    .ticker {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .ticker-item {
+      background: var(--card);
+      padding: 20px 24px;
+    }
+    .ticker-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 6px;
+    }
+    .ticker-value {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .ticker-value.accent { color: var(--green); }
+    .ticker-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* Section headers */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 640px;
+      margin-bottom: 48px;
+    }
+
+    /* Cards grid */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--border-hi); }
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .card-icon.pink { background: var(--pink-dim); }
+    .card-icon.purple { background: var(--purple-dim); }
+    .card-icon.green { background: var(--green-dim); }
+    .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+    /* Loop diagram */
+    .loop {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+    .loop-step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      text-align: center;
+      min-width: 140px;
+    }
+    .loop-step .num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--pink);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .loop-step .title { font-weight: 700; font-size: 14px; }
+    .loop-step .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .loop-arrow {
+      color: var(--dim);
+      font-size: 20px;
+      padding: 0 8px;
+    }
+
+    /* Tables */
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead { background: var(--bg-2); }
+    th {
+      text-align: left;
+      padding: 14px 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--dim);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    td strong, td .val { color: var(--text); font-weight: 600; }
+    td .mono { font-family: var(--mono); font-size: 13px; }
+    .rarity {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .r-common { background: #2a2a3a; color: #aaa; }
+    .r-uncommon { background: rgba(0,230,118,0.15); color: var(--green); }
+    .r-rare { background: rgba(33,150,243,0.15); color: #42a5f5; }
+    .r-epic { background: rgba(124,92,255,0.15); color: var(--purple); }
+    .r-legendary { background: rgba(255,179,0,0.15); color: var(--gold); }
+
+    /* Tokenomics split */
+    .token-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .alloc-bar {
+      margin-bottom: 16px;
+    }
+    .alloc-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .alloc-header span:first-child { color: var(--text); font-weight: 600; }
+    .alloc-header span:last-child { font-family: var(--mono); color: var(--muted); font-size: 12px; }
+    .alloc-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .alloc-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .phase-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .phase-tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: transparent;
+      cursor: default;
+    }
+    .phase-tab.active {
+      background: var(--purple-dim);
+      border-color: rgba(124,92,255,0.4);
+      color: var(--purple);
+    }
+
+    /* Clans */
+    .clans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .clan {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .clan-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .clan-name { font-weight: 700; font-size: 14px; }
+    .clan-loc { font-size: 12px; color: var(--muted); }
+
+    /* Roadmap */
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .rm-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      position: relative;
+    }
+    .rm-item.done { border-color: rgba(0,230,118,0.3); }
+    .rm-item.current { border-color: rgba(255,61,129,0.4); }
+    .rm-phase {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+    .rm-item.done .rm-phase { color: var(--green); }
+    .rm-item.current .rm-phase { color: var(--pink); }
+    .rm-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+    .rm-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* Disclaimer */
+    .disclaimer {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      font-size: 13px;
+      color: var(--dim);
+      line-height: 1.7;
+    }
+    .disclaimer strong { color: var(--muted); }
+
+    /* CTA */
+    .cta-block {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,61,129,0.08), rgba(124,92,255,0.08));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 64px 32px;
+    }
+    .cta-block h2 { margin-bottom: 12px; }
+    .cta-block p { color: var(--muted); margin-bottom: 32px; font-size: 17px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--dim);
+      font-size: 13px;
+      position: relative;
+      z-index: 1;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--pink); }
+
+    /* Logo concepts */
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .logo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px 18px;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.15s;
+      cursor: default;
+    }
+    .logo-card:hover {
+      border-color: var(--border-hi);
+      transform: translateY(-2px);
+    }
+    .logo-card.selected {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 1px rgba(255,61,129,0.3);
+    }
+    .logo-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--dim);
+      margin-bottom: 12px;
+    }
+    .logo-preview {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 14px;
+      border-radius: 22px;
+      background: var(--bg-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .logo-preview svg {
+      width: 64px;
+      height: 64px;
+    }
+    .logo-name {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .logo-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .logo-hint {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--dim);
+    }
+    .logo-hint strong { color: var(--pink); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .ticker { grid-template-columns: repeat(2, 1fr); }
+      .cards-3, .token-grid, .roadmap, .clans { grid-template-columns: 1fr; }
+      .logo-grid { grid-template-columns: repeat(2, 1fr); }
+      .loop-arrow { display: none; }
+      .loop { gap: 8px; }
+    }
+    @media (max-width: 480px) {
+      .logo-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="#">GO<span>MEME</span></a>
+      <ul class="nav-links">
+        <li><a href="#logos">Логотип</a></li>
+        <li><a href="#idea">Идея</a></li>
+        <li><a href="#gameplay">Геймплей</a></li>
+        <li><a href="#token">$BRAIN</a></li>
+        <li><a href="#market">Маркет</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+      </ul>
+      <a class="nav-cta" href="../install/index.html">Скачать</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero -->
+    <section>
+      <div class="container">
+        <div class="hero-badge">v1.1.a · MVP live</div>
+        <h1>Лови мемов.<br>Торгуй картами.<br><span class="grad">Зарабатывай $BRAIN.</span></h1>
+        <p class="hero-sub">
+          GOMEME — GPS-коллекционная игра в духе Pokémon GO, но с Italian Brainrot.
+          Ходи по городу, лови Tralalero на улице, продавай редких на маркете.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="../install/index.html">📱 Установить</a>
+          <a class="btn btn-ghost" href="#token">Токеномика $BRAIN</a>
+        </div>
+
+        <div class="ticker">
+          <div class="ticker-item">
+            <div class="ticker-label">Токен</div>
+            <div class="ticker-value">$BRAIN</div>
+            <div class="ticker-sub">Brainrot Coin</div>
+          </div>
+          <div class="ticker-item">
+            <div class="ticker-label">Курс IAP</div>
+            <div class="ticker-value accent">100 ≈ $0.99</div>
+            <div class="ticker-sub">App Store / Google Play</div>
+          </div>
+          <div class="ticker-item">
+            <div class="ticker-label">Коллекция</div>
+            <div class="ticker-value">120</div>
+            <div class="ticker-sub">мемов в MVP · 380 в roadmap</div>
+          </div>
+          <div class="ticker-item">
+            <div class="ticker-label">Комиссия маркета</div>
+            <div class="ticker-value">8%</div>
+            <div class="ticker-sub">burn / treasury</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logo concepts -->
+    <section id="logos">
+      <div class="container">
+        <div class="section-label">Брендинг</div>
+        <h2>10 вариантов иконки</h2>
+        <p class="section-desc">
+          App icon для GOMEME — каждый вариант заточен под разный смысл бренда:
+          walk-to-earn, мемы, GPS, коллекция, $BRAIN. Выбери номер — зафиксируем.
+        </p>
+
+        <div class="logo-grid">
+
+          <!-- 01 Go Pin -->
+          <div class="logo-card">
+            <div class="logo-num">#01</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="g1" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#ff3d81"/><stop offset="1" stop-color="#7c5cff"/>
+                  </linearGradient>
+                </defs>
+                <path d="M32 4C21.5 4 13 12.5 13 23c0 14.5 19 37 19 37s19-22.5 19-37C51 12.5 42.5 4 32 4z" fill="url(#g1)"/>
+                <path d="M32 14c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10z" fill="#06060b"/>
+                <path d="M28 22h8v2h-3v10h-2V24h-3v-2z" fill="#ff3d81"/>
+              </svg>
+            </div>
+            <div class="logo-name">Go Pin</div>
+            <div class="logo-desc">GPS-пин с «G» — иди на улицу, лови мемов рядом</div>
+          </div>
+
+          <!-- 02 Catch Ring -->
+          <div class="logo-card">
+            <div class="logo-num">#02</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="26" stroke="#7c5cff" stroke-width="3" stroke-dasharray="8 5" opacity="0.7"/>
+                <circle cx="32" cy="32" r="18" stroke="#ff3d81" stroke-width="2.5"/>
+                <circle cx="26" cy="28" r="3" fill="#f4f4f8"/>
+                <circle cx="38" cy="28" r="3" fill="#f4f4f8"/>
+                <path d="M24 38 Q32 46 40 38" stroke="#f4f4f8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <circle cx="26" cy="28" r="1.2" fill="#06060b"/>
+                <circle cx="38" cy="28" r="1.2" fill="#06060b"/>
+              </svg>
+            </div>
+            <div class="logo-name">Catch Ring</div>
+            <div class="logo-desc">Кольцо ловли + мем-лицо — AR-catch как в GO-играх</div>
+          </div>
+
+          <!-- 03 GM Monogram -->
+          <div class="logo-card">
+            <div class="logo-num">#03</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="4" width="56" height="56" rx="14" fill="#11111a" stroke="#2d2d44" stroke-width="1.5"/>
+                <path d="M18 44V20h10c6 0 10 3.5 10 9.5S34 39 28 39h-4v5H18zm8-12h4c2.5 0 4-1.5 4-4s-1.5-4-4-4h-4v8z" fill="#f4f4f8"/>
+                <path d="M38 44l8-24h6l8 24h-6l-1.5-5h-7l-1.5 5H38zm10-9l-2.5-8-2.5 8h5z" fill="#ff3d81"/>
+              </svg>
+            </div>
+            <div class="logo-name">GM Monogram</div>
+            <div class="logo-desc">G + M — чистый wordmark, узнаваем на App Store</div>
+          </div>
+
+          <!-- 04 Brain Coin -->
+          <div class="logo-card">
+            <div class="logo-num">#04</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="28" fill="#11111a" stroke="#00e676" stroke-width="2"/>
+                <path d="M32 14c-6 0-10 4-10 9 0 2 1 3.5 2.5 4.5-2 1-3.5 3.5-3.5 6.5 0 4 3.5 7.5 8 7.5h6c4.5 0 8-3.5 8-7.5 0-3-1.5-5.5-3.5-6.5 1.5-1 2.5-2.5 2.5-4.5 0-5-4-9-10-9z" fill="#ff3d81"/>
+                <path d="M28 26c0-2 1.5-3.5 4-3.5s4 1.5 4 3.5" stroke="#06060b" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M26 34c2 2 4 3 6 3s4-1 6-3" stroke="#06060b" stroke-width="1.5" stroke-linecap="round"/>
+                <text x="32" y="52" text-anchor="middle" fill="#00e676" font-family="monospace" font-size="8" font-weight="600">$</text>
+              </svg>
+            </div>
+            <div class="logo-name">Brain Coin</div>
+            <div class="logo-desc">Brainrot + $BRAIN — мем-культура и токен в одном</div>
+          </div>
+
+          <!-- 05 Play Go -->
+          <div class="logo-card">
+            <div class="logo-num">#05</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="g5" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#ff3d81"/><stop offset="1" stop-color="#7c5cff"/>
+                  </linearGradient>
+                </defs>
+                <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#g5)"/>
+                <path d="M26 18 L26 46 L46 32 Z" fill="#f4f4f8"/>
+                <circle cx="22" cy="22" r="2.5" fill="#06060b" opacity="0.6"/>
+                <circle cx="22" cy="42" r="2.5" fill="#06060b" opacity="0.6"/>
+              </svg>
+            </div>
+            <div class="logo-name">Play Go</div>
+            <div class="logo-desc">Go = play/старт. Мем-глаза — игра начинается с прогулки</div>
+          </div>
+
+          <!-- 06 Card Stack -->
+          <div class="logo-card">
+            <div class="logo-num">#06</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="14" y="18" width="28" height="36" rx="4" fill="#2d2d44" transform="rotate(-8 28 36)"/>
+                <rect x="18" y="14" width="28" height="36" rx="4" fill="#7c5cff" opacity="0.5" transform="rotate(4 32 32)"/>
+                <rect x="20" y="10" width="28" height="36" rx="4" fill="#11111a" stroke="#ff3d81" stroke-width="2"/>
+                <circle cx="34" cy="24" r="6" fill="#ff3d81" opacity="0.3"/>
+                <rect x="26" y="34" width="16" height="3" rx="1.5" fill="#ff3d81"/>
+                <rect x="26" y="40" width="10" height="2" rx="1" fill="#55556a"/>
+              </svg>
+            </div>
+            <div class="logo-name">Card Stack</div>
+            <div class="logo-desc">Коллекция + маркет — стопка редких brainrot-карт</div>
+          </div>
+
+          <!-- 07 Radar Spawn -->
+          <div class="logo-card">
+            <div class="logo-num">#07</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="26" stroke="#1e1e2e" stroke-width="2"/>
+                <circle cx="32" cy="32" r="18" stroke="#2d2d44" stroke-width="1.5"/>
+                <circle cx="32" cy="32" r="10" stroke="#2d2d44" stroke-width="1"/>
+                <path d="M32 32 L32 6 A26 26 0 0 1 52 18 Z" fill="#ff3d81" opacity="0.25"/>
+                <path d="M32 32 L32 6" stroke="#ff3d81" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="32" cy="32" r="4" fill="#ff3d81"/>
+                <circle cx="44" cy="22" r="3" fill="#00e676"/>
+                <circle cx="20" cy="38" r="2.5" fill="#7c5cff"/>
+                <circle cx="40" cy="42" r="2" fill="#ffb300"/>
+              </svg>
+            </div>
+            <div class="logo-name">Radar Spawn</div>
+            <div class="logo-desc">GPS-радар со спавнами — мемы рядом, иди ловить</div>
+          </div>
+
+          <!-- 08 Meme Bolt -->
+          <div class="logo-card">
+            <div class="logo-num">#08</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="g8" x1="16" y1="4" x2="48" y2="60" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#ff3d81"/><stop offset="1" stop-color="#7c5cff"/>
+                  </linearGradient>
+                </defs>
+                <path d="M36 4 L16 36 h14 L22 60 L48 28 H34 L36 4Z" fill="url(#g8)"/>
+                <circle cx="28" cy="22" r="3" fill="#f4f4f8"/>
+                <circle cx="38" cy="22" r="3" fill="#f4f4f8"/>
+                <circle cx="28" cy="22" r="1.2" fill="#06060b"/>
+                <circle cx="38" cy="22" r="1.2" fill="#06060b"/>
+                <path d="M26 30 Q33 36 40 30" stroke="#06060b" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+            <div class="logo-name">Meme Bolt</div>
+            <div class="logo-desc">Viral energy — brainrot как молния, мемы летят</div>
+          </div>
+
+          <!-- 09 AR Lens -->
+          <div class="logo-card">
+            <div class="logo-num">#09</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="18" width="48" height="32" rx="8" stroke="#7c5cff" stroke-width="2.5" fill="#11111a"/>
+                <circle cx="32" cy="34" r="10" stroke="#ff3d81" stroke-width="2" fill="none"/>
+                <circle cx="32" cy="34" r="4" fill="#ff3d81"/>
+                <circle cx="34" cy="32" r="1.5" fill="#f4f4f8"/>
+                <rect x="24" y="12" width="16" height="6" rx="3" fill="#7c5cff"/>
+                <path d="M20 50 L24 46 M44 50 L40 46" stroke="#55556a" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="logo-name">AR Lens</div>
+            <div class="logo-desc">Камера + таргет — AR-ловля мемов на улице</div>
+          </div>
+
+          <!-- 10 Pixel GO -->
+          <div class="logo-card">
+            <div class="logo-num">#10</div>
+            <div class="logo-preview">
+              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="6" width="52" height="52" rx="4" fill="#11111a" stroke="#2d2d44" stroke-width="2"/>
+                <!-- Pixel G -->
+                <rect x="14" y="16" width="4" height="20" fill="#ff3d81"/>
+                <rect x="18" y="16" width="8" height="4" fill="#ff3d81"/>
+                <rect x="22" y="20" width="4" height="8" fill="#ff3d81"/>
+                <rect x="18" y="28" width="8" height="4" fill="#ff3d81"/>
+                <rect x="14" y="32" width="12" height="4" fill="#ff3d81"/>
+                <!-- Pixel O / arrow -->
+                <rect x="36" y="16" width="4" height="16" fill="#7c5cff"/>
+                <rect x="40" y="16" width="8" height="4" fill="#7c5cff"/>
+                <rect x="44" y="20" width="4" height="8" fill="#7c5cff"/>
+                <rect x="40" y="28" width="8" height="4" fill="#7c5cff"/>
+                <rect x="36" y="32" width="4" height="4" fill="#7c5cff"/>
+                <rect x="40" y="36" width="8" height="4" fill="#00e676"/>
+                <rect x="48" y="32" width="4" height="4" fill="#00e676"/>
+              </svg>
+            </div>
+            <div class="logo-name">Pixel GO</div>
+            <div class="logo-desc">Retro pixel badge — gaming + internet meme culture</div>
+          </div>
+
+        </div>
+
+        <p class="logo-hint">Напиши номер в Telegram: <strong>#01–#10</strong> — выбранный вариант доработаем в финальный app icon</p>
+      </div>
+    </section>
+
+    <!-- Idea -->
+    <section id="idea">
+      <div class="container">
+        <div class="section-label">Концепт</div>
+        <h2>Pokémon GO × Italian Brainrot</h2>
+        <p class="section-desc">
+          Бесплатная игра с walk-to-earn механикой. Нашёл редкого на улице — продал на маркете — вывел.
+          Купить Legendary в магазине можно, но за $1 500. Сообщение простое: <strong style="color:var(--text)">иди гуляй</strong>.
+        </p>
+
+        <div class="cards-3">
+          <div class="card">
+            <div class="card-icon pink">🗺</div>
+            <h3>GPS-карта</h3>
+            <p>Спавны рядом с тобой. 1–3 мема в радиусе 200 м. Кланы привязаны к биомам: Drinkellini у кофеен, Musichini у клубов.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon purple">📸</div>
+            <h3>AR-ловля</h3>
+            <p>Камера, plane detection, мем на экране. Удержание 2 сек — поймал. Fallback без AR для старых устройств.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon green">💰</div>
+            <h3>P2P-маркет</h3>
+            <p>Выстави карту, покупатель платит в $BRAIN. Комиссия 8%. Legendary-трейды публичны. KYC на вывод.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gameplay loop -->
+    <section id="gameplay">
+      <div class="container">
+        <div class="section-label">Геймплей</div>
+        <h2>Игровой цикл</h2>
+        <p class="section-desc">От спавна на карте до заработка на маркете — полный loop за одну прогулку.</p>
+
+        <div class="loop">
+          <div class="loop-step">
+            <div class="num">01</div>
+            <div class="title">Карта</div>
+            <div class="sub">GPS · спавн рядом</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="num">02</div>
+            <div class="title">Ловля</div>
+            <div class="sub">AR / 2D catch</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="num">03</div>
+            <div class="title">Коллекция</div>
+            <div class="sub">Brainrotdex</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="num">04</div>
+            <div class="title">PvP Deck Flip</div>
+            <div class="sub">5 карт · ranked</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="num">05</div>
+            <div class="title">Маркет</div>
+            <div class="sub">продажа → $BRAIN</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Редкость</th>
+                <th>Spawn rate</th>
+                <th>Кол-во (MVP)</th>
+                <th>Цена в магазине</th>
+                <th>~USD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rarity r-common">Common</span></td>
+                <td class="mono">60%</td>
+                <td class="mono">~50</td>
+                <td class="mono">500 $BRAIN</td>
+                <td>~$5</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-uncommon">Uncommon</span></td>
+                <td class="mono">25%</td>
+                <td class="mono">~30</td>
+                <td class="mono">2 000 $BRAIN</td>
+                <td>~$20</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-rare">Rare</span></td>
+                <td class="mono">10%</td>
+                <td class="mono">~25</td>
+                <td class="mono">8 000 $BRAIN</td>
+                <td>~$80</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-epic">Epic</span></td>
+                <td class="mono">4%</td>
+                <td class="mono">~12</td>
+                <td class="mono">30 000 $BRAIN</td>
+                <td>~$300</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-legendary">Legendary</span></td>
+                <td class="mono">1%</td>
+                <td class="mono">~13</td>
+                <td class="mono">150 000 $BRAIN</td>
+                <td><strong>~$1 500</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-label" style="margin-top:48px">9 кланов × биомы</div>
+        <div class="clans">
+          <div class="clan"><div class="clan-dot" style="background:#ff6b6b"></div><div><div class="clan-name">Drinkellini</div><div class="clan-loc">Кафе, центр города</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#ffd93d"></div><div><div class="clan-name">Bombardini</div><div class="clan-loc">Аэропорты, промзоны</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#6bcb77"></div><div><div class="clan-name">Animalini</div><div class="clan-loc">Парки, зоопарки</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#4d96ff"></div><div><div class="clan-name">Oceanini</div><div class="clan-loc">Водоёмы, пляжи</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#c77dff"></div><div><div class="clan-name">Musichini</div><div class="clan-loc">Концерты, клубы</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#ff9f43"></div><div><div class="clan-name">Foodini</div><div class="clan-loc">Рестораны, ТЦ</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#a8dadc"></div><div><div class="clan-name">Robotini</div><div class="clan-loc">Офисы, электроника</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#e63946"></div><div><div class="clan-name">Banditini</div><div class="clan-loc">Ночью, переулки</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#7b2ff7"></div><div><div class="clan-name">Cosmicini</div><div class="clan-loc">Редко, ивенты</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tokenomics -->
+    <section id="token">
+      <div class="container">
+        <div class="section-label">Токеномика</div>
+        <h2>$BRAIN — Brainrot Coin</h2>
+        <p class="section-desc">
+          Единая валюта маркета, магазина и PvP-ставок. v1 — in-game ledger (централизованный).
+          v2 — опциональный on-chain (SPL / ERC-20) после юридической проработки.
+        </p>
+
+        <div class="phase-tabs">
+          <div class="phase-tab active">Phase 1 · In-game (сейчас)</div>
+          <div class="phase-tab">Phase 2 · On-chain (v2)</div>
+        </div>
+
+        <div class="token-grid">
+          <div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Параметр</th>
+                    <th>Значение</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Тикер</td>
+                    <td class="mono"><strong>$BRAIN</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Название</td>
+                    <td>Brainrot Coin</td>
+                  </tr>
+                  <tr>
+                    <td>Тип (v1)</td>
+                    <td>In-game currency · Brain Wallet</td>
+                  </tr>
+                  <tr>
+                    <td>Тип (v2)</td>
+                    <td>SPL / ERC-20 (опционально)</td>
+                  </tr>
+                  <tr>
+                    <td>Total Supply (v2)</td>
+                    <td class="mono">1 000 000 000</td>
+                  </tr>
+                  <tr>
+                    <td>Курс IAP</td>
+                    <td class="mono">100 $BRAIN = $0.99</td>
+                  </tr>
+                  <tr>
+                    <td>Inflation</td>
+                    <td>Контролируемая · IAP mint only</td>
+                  </tr>
+                  <tr>
+                    <td>Deflation</td>
+                    <td>8% market fee · burn / treasury</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>IAP-пакет</th>
+                    <th>$BRAIN</th>
+                    <th>~USD</th>
+                    <th>Бонус</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Starter</td>
+                    <td class="mono">100</td>
+                    <td>$0.99</td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>Walker</td>
+                    <td class="mono">500</td>
+                    <td>$4.99</td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>Hunter</td>
+                    <td class="mono">2 000</td>
+                    <td>$19.99</td>
+                    <td>+5%</td>
+                  </tr>
+                  <tr>
+                    <td>Legend</td>
+                    <td class="mono">10 000</td>
+                    <td>$99.99</td>
+                    <td>+10%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size:16px;font-weight:700;margin-bottom:20px">Распределение supply (v2 on-chain)</h3>
+
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Player Rewards & Walk-to-Earn</span><span>40% · 400M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:40%;background:var(--green)"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Treasury & Liquidity</span><span>20% · 200M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:20%;background:var(--purple)"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Team · 4yr vest, 1yr cliff</span><span>15% · 150M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:15%;background:var(--pink)"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Marketing & Partnerships</span><span>10% · 100M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:10%;background:#42a5f5"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Ecosystem / Events</span><span>10% · 100M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:10%;background:var(--gold)"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Community Airdrop</span><span>5% · 50M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:5%;background:#ff6b6b"></div></div>
+            </div>
+
+            <div class="table-wrap" style="margin-top:24px">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Утилити $BRAIN</th>
+                    <th>Описание</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Магазин</strong></td><td>Mint карточек от студии</td></tr>
+                  <tr><td><strong>P2P-маркет</strong></td><td>Торговля между игроками</td></tr>
+                  <tr><td><strong>PvP Stakes</strong></td><td>Ставки 50–500 $BRAIN в ranked</td></tr>
+                  <tr><td><strong>Косметика</strong></td><td>Скины, рамки, эмоции</td></tr>
+                  <tr><td><strong>Вывод</strong></td><td>$BRAIN → fiat / USDC (v2, KYC)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Market & Earn -->
+    <section id="market">
+      <div class="container">
+        <div class="section-label">Экономика</div>
+        <h2>Маркет и заработок</h2>
+        <p class="section-desc">Walk-to-earn lite: без вложений, но с реальным вторичным рынком коллекционных карт.</p>
+
+        <div class="cards-3" style="margin-bottom:48px">
+          <div class="card">
+            <div class="card-icon green">🚶</div>
+            <h3>Walk-to-Earn</h3>
+            <p>Поймал Rare+ → шанс Brain Dust (10–50 $BRAIN). Продал на маркете → 100% минус 8% fee. PvP win → +25 $BRAIN.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon pink">🏪</div>
+            <h3>P2P-маркет</h3>
+            <p>Продавец ставит цену сам. Floor hint = shop × 0.7. Max 5 листингов. Legendary trades — публичный лог.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon purple">🏦</div>
+            <h3>Вывод</h3>
+            <p>KYC 18+. Min 10 000 $BRAIN (~$100). Fee 5%. Лимит $500/день. Новые аккаунты — hold 14 дней.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Действие</th>
+                <th>Награда</th>
+                <th>Условия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Поймал Common</td>
+                <td class="mono">0 $BRAIN</td>
+                <td>Только карта в коллекцию</td>
+              </tr>
+              <tr>
+                <td>Поймал Rare+</td>
+                <td class="mono">10–50 $BRAIN</td>
+                <td>Brain Dust · случайный шанс</td>
+              </tr>
+              <tr>
+                <td>Продажа на маркете</td>
+                <td class="mono">цена − 8%</td>
+                <td>P2P · buy now / аукцион</td>
+              </tr>
+              <tr>
+                <td>PvP ranked win</td>
+                <td class="mono">+25 $BRAIN</td>
+                <td>+ карта в stake mode</td>
+              </tr>
+              <tr>
+                <td>Stake mode</td>
+                <td class="mono">+180 $BRAIN</td>
+                <td>Оба ставят 100 → победитель забирает</td>
+              </tr>
+              <tr>
+                <td>PvP low stakes</td>
+                <td class="mono">50 $BRAIN</td>
+                <td>DPS ±10% matchmaking</td>
+              </tr>
+              <tr>
+                <td>PvP high stakes</td>
+                <td class="mono">500 $BRAIN</td>
+                <td>Gold+ only · DPS ±5%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Правило маркета</th>
+                <th>Значение</th>
+                <th>Зачем</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Комиссия платформы</td>
+                <td class="mono">8%</td>
+                <td>Burn или treasury · анти-инфляция</td>
+              </tr>
+              <tr>
+                <td>Мин. цена Common</td>
+                <td class="mono">100 $BRAIN</td>
+                <td>Анти-спам листингов</td>
+              </tr>
+              <tr>
+                <td>Max листингов</td>
+                <td class="mono">5 / аккаунт</td>
+                <td>Анти-bot</td>
+              </tr>
+              <tr>
+                <td>Hold новых аккаунтов</td>
+                <td class="mono">14 дней</td>
+                <td>Анти-fraud перед выводом</td>
+              </tr>
+              <tr>
+                <td>Legendary supply cap</td>
+                <td class="mono">29 max</td>
+                <td>Прозрачный circulation log</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap">
+      <div class="container">
+        <div class="section-label">Roadmap</div>
+        <h2>Этапы развития</h2>
+        <p class="section-desc">От MVP с 120 мемами до полного каталога 380 + on-chain $BRAIN.</p>
+
+        <div class="roadmap">
+          <div class="rm-item done">
+            <div class="rm-phase">✓ DONE</div>
+            <div class="rm-title">Wave 0 — Assets</div>
+            <div class="rm-desc">380 мемов в реестре, 361 art source, build pipeline, карточки</div>
+          </div>
+          <div class="rm-item current">
+            <div class="rm-phase">● NOW · v1.1.a</div>
+            <div class="rm-title">MVP Launch</div>
+            <div class="rm-desc">GPS-карта, 120 мемов, ловля, коллекция, iOS + Android</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-phase">Q3 2026</div>
+            <div class="rm-title">PvP + Market</div>
+            <div class="rm-desc">Deck Flip ranked, P2P-маркет, Brain Wallet, IAP $BRAIN</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-phase">Q4 2026</div>
+            <div class="rm-title">Wave 2 + On-chain</div>
+            <div class="rm-desc">+130 мемов, вывод USDC, SPL/ERC-20 $BRAIN, KYC portal</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disclaimer + CTA -->
+    <section>
+      <div class="container">
+        <div class="disclaimer" style="margin-bottom:48px">
+          <strong>Дисклеймер.</strong> $BRAIN — игровая валюта, не инвестиционный продукт.
+          Нет гарантированной доходности. Вторичный рынок коллекционных предметов регулируется ToS.
+          Вывод требует KYC 18+. Apple/Google IAP — единственный способ покупки $BRAIN в приложении.
+          On-chain v2 — только после юридической проработки. Играй ответственно.
+        </div>
+
+        <div class="cta-block">
+          <h2>Готов ловить brainrot?</h2>
+          <p>Бесплатно. Без кошелька. Просто скачай и выходи на улицу.</p>
+          <a class="btn btn-primary" href="../install/index.html">Установить GOMEME</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>GOMEME · Italian Brainrot GO · v1.1.a</p>
+    <p style="margin-top:8px">
+      <a href="../install/index.html">Установка</a> ·
+      <a href="https://t.me/GO_MEME_APP_BOT" target="_blank" rel="noopener">@GO_MEME_APP_BOT</a>
+    </p>
+  </footer>
+</body>
+</html>
