@@ -1,8 +1,0 @@
-<svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="96" height="96" rx="22" fill="#081510"/>
-
-    <circle cx="48" cy="48" r="32" stroke="#00e676" stroke-width="2.5"/>
-    <circle cx="48" cy="48" r="26" fill="#0a1a12"/>
-    <text x="48" y="44" text-anchor="middle" fill="#ff3d81" font-family="monospace" font-size="11" font-weight="700">GOME</text>
-    <text x="48" y="58" text-anchor="middle" fill="#00e676" font-family="monospace" font-size="11" font-weight="700">MEME</text>
-</svg>

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GOMEME — Walk-to-Earn Brainrot GO</title>
+  <title>GOMEME — Walk-to-Earn Brainrot</title>
   <meta name="description" content="GPS-коллекционная игра: лови Italian Brainrot на улице, торгуй на маркете, зарабатывай $GOMEME." />
-  <meta property="og:title" content="GOMEME — Brainrot GO" />
-  <meta property="og:description" content="Pokémon GO × Italian Brainrot. Токен $GOMEME, P2P-маркет, walk-to-earn." />
+  <meta property="og:title" content="GOMEME — Italian Brainrot" />
+  <meta property="og:description" content="GPS-коллекционная игра с Italian Brainrot. Токен $GOMEME, P2P-маркет, walk-to-earn." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -362,7 +362,9 @@
     .r-uncommon { background: rgba(0,230,118,0.15); color: var(--green); }
     .r-rare { background: rgba(33,150,243,0.15); color: #42a5f5; }
     .r-epic { background: rgba(124,92,255,0.15); color: var(--purple); }
-    .r-legendary { background: rgba(255,179,0,0.15); color: var(--gold); }
+    .r-legendary { background: rgba(255,140,0,0.15); color: #ff8c00; }
+    .r-mythic { background: rgba(255,215,0,0.15); color: #ffd700; }
+    .r-exotic { background: linear-gradient(90deg, rgba(255,61,129,0.15), rgba(0,230,118,0.15), rgba(124,92,255,0.15)); color: #e0b0ff; }
 
     /* Tokenomics split */
     .token-grid {
@@ -496,87 +498,44 @@
     footer a { color: var(--muted); text-decoration: none; }
     footer a:hover { color: var(--pink); }
 
-    /* Logo concepts */
-    .logo-grid {
+    /* Rarity cards */
+    .rarity-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
     }
-    .logo-card {
+    .rarity-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px 16px 18px;
-      text-align: center;
-      transition: border-color 0.2s, transform 0.15s;
-      cursor: default;
-    }
-    .logo-card:hover {
-      border-color: var(--border-hi);
-      transform: translateY(-2px);
-    }
-    .logo-card.selected {
-      border-color: var(--pink);
-      box-shadow: 0 0 0 1px rgba(255,61,129,0.3);
-    }
-    .logo-num {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--dim);
-      margin-bottom: 12px;
-    }
-    .logo-preview {
-      width: 96px;
-      height: 96px;
-      margin: 0 auto 14px;
-      border-radius: 22px;
-      background: var(--bg-2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-    }
-    .logo-preview svg,
-    .logo-preview img {
-      width: 96px;
-      height: 96px;
-      display: block;
-      border-radius: 22px;
-    }
-    .logo-card {
-      cursor: pointer;
-    }
-    .logo-name {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .logo-desc {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-    .logo-hint {
-      margin-top: 32px;
       text-align: center;
-      font-size: 14px;
-      color: var(--dim);
     }
-    .logo-hint strong { color: var(--pink); }
+    .rarity-card img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      display: block;
+    }
+    .rarity-card .r-label {
+      padding: 10px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
 
     /* Responsive */
     @media (max-width: 900px) {
       .nav-links { display: none; }
       .ticker { grid-template-columns: repeat(2, 1fr); }
       .cards-3, .token-grid, .roadmap, .clans { grid-template-columns: 1fr; }
-      .logo-grid { grid-template-columns: repeat(2, 1fr); }
+      .rarity-grid { grid-template-columns: repeat(3, 1fr); }
       .loop-arrow { display: none; }
       .loop { gap: 8px; }
     }
     @media (max-width: 480px) {
-      .logo-grid { grid-template-columns: 1fr; }
+      .rarity-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -589,7 +548,6 @@
     <div class="nav-inner">
       <a class="logo" href="#">GO<span>MEME</span></a>
       <ul class="nav-links">
-        <li><a href="#logos">Логотип</a></li>
         <li><a href="#idea">Идея</a></li>
         <li><a href="#gameplay">Геймплей</a></li>
         <li><a href="#token">$GOMEME</a></li>
@@ -607,7 +565,7 @@
         <div class="hero-badge">v1.1.a · MVP live</div>
         <h1>Лови мемов.<br>Торгуй картами.<br><span class="grad">Зарабатывай $GOMEME.</span></h1>
         <p class="hero-sub">
-          GOMEME — GPS-коллекционная игра в духе Pokémon GO, но с Italian Brainrot.
+          GOMEME — GPS-коллекционная игра с Italian Brainrot.
           Ходи по городу, лови Tralalero на улице, продавай редких на маркете.
         </p>
         <div class="hero-actions">
@@ -640,590 +598,11 @@
       </div>
     </section>
 
-    <!-- Logo concepts -->
-    <section id="logos">
-      <div class="container">
-        <div class="section-label">Брендинг</div>
-        <h2>80 вариантов иконки</h2>
-        <p class="section-desc">
-          App icon для <strong style="color:var(--text)">GoMem</strong> — 80 концепций.
-          <strong style="color:var(--pink)">#19 Catch Hand</strong> — 8 расцветок по редкости карточек (#19, #74–80).
-          Тапни → напиши номер.
-        </p>
-
-        <div class="logo-grid" id="logo-grid">
-
-          <div class="logo-card" data-num="01">
-            <div class="logo-num">#01</div>
-            <div class="logo-preview"><img src="logos/01-go-pin.svg" alt="Go Pin" width="96" height="96" /></div>
-            <div class="logo-name">Go Pin</div>
-            <div class="logo-desc">GPS-пин с «G» внутри — Go + локация, иди ловить мемов рядом</div>
-          </div>
-
-          <div class="logo-card" data-num="02">
-            <div class="logo-num">#02</div>
-            <div class="logo-preview"><img src="logos/02-catch-ring.svg" alt="Catch Ring" width="96" height="96" /></div>
-            <div class="logo-name">Catch Ring</div>
-            <div class="logo-desc">Кольцо ловли + мем-лицо — core-механика AR-catch как в GO</div>
-          </div>
-
-          <div class="logo-card" data-num="03">
-            <div class="logo-num">#03</div>
-            <div class="logo-preview"><img src="logos/03-gm-monogram.svg" alt="GM Monogram" width="96" height="96" /></div>
-            <div class="logo-name">GM Monogram</div>
-            <div class="logo-desc">Go + Meme = GM — чистый wordmark, узнаваем на App Store</div>
-          </div>
-
-          <div class="logo-card" data-num="04">
-            <div class="logo-num">#04</div>
-            <div class="logo-preview"><img src="logos/04-brain-coin.svg" alt="Brain Coin" width="96" height="96" /></div>
-            <div class="logo-name">Brain Coin</div>
-            <div class="logo-desc">Brainrot + $GOMEME — мем-культура и токен в одной иконке</div>
-          </div>
-
-          <div class="logo-card" data-num="05">
-            <div class="logo-num">#05</div>
-            <div class="logo-preview"><img src="logos/05-play-go.svg" alt="Play Go" width="96" height="96" /></div>
-            <div class="logo-name">Play Go</div>
-            <div class="logo-desc">Play = Go = старт. Точки маршрута — игра начинается с прогулки</div>
-          </div>
-
-          <div class="logo-card" data-num="06">
-            <div class="logo-num">#06</div>
-            <div class="logo-preview"><img src="logos/06-card-stack.svg" alt="Card Stack" width="96" height="96" /></div>
-            <div class="logo-name">Card Stack</div>
-            <div class="logo-desc">Коллекция + маркет — стопка редких brainrot-карт за $GOMEME</div>
-          </div>
-
-          <div class="logo-card" data-num="07">
-            <div class="logo-num">#07</div>
-            <div class="logo-preview"><img src="logos/07-radar-spawn.svg" alt="Radar Spawn" width="96" height="96" /></div>
-            <div class="logo-name">Radar Spawn</div>
-            <div class="logo-desc">GPS-радар со спавнами разной редкости — мемы рядом на карте</div>
-          </div>
-
-          <div class="logo-card" data-num="08">
-            <div class="logo-num">#08</div>
-            <div class="logo-preview"><img src="logos/08-meme-bolt.svg" alt="Meme Bolt" width="96" height="96" /></div>
-            <div class="logo-name">Meme Bolt</div>
-            <div class="logo-desc">Viral energy — brainrot как молния, мемы разлетаются</div>
-          </div>
-
-          <div class="logo-card" data-num="09">
-            <div class="logo-num">#09</div>
-            <div class="logo-preview"><img src="logos/09-ar-lens.svg" alt="AR Lens" width="96" height="96" /></div>
-            <div class="logo-name">AR Lens</div>
-            <div class="logo-desc">Камера + таргет — AR-ловля мемов через viewfinder</div>
-          </div>
-
-          <div class="logo-card" data-num="10">
-            <div class="logo-num">#10</div>
-            <div class="logo-preview"><img src="logos/10-pixel-go.svg" alt="Pixel GO" width="96" height="96" /></div>
-            <div class="logo-name">Pixel GO</div>
-            <div class="logo-desc">8-bit GM badge — retro gaming + internet meme culture</div>
-          </div>
-
-          <div class="logo-card" data-num="11">
-            <div class="logo-num">#11</div>
-            <div class="logo-preview"><img src="logos/11-walk-steps.svg" alt="Walk Steps" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Walk Steps</div>
-            <div class="logo-desc">Следы шагов — walk-to-earn, каждый шаг = шанс на спавн</div>
-          </div>
-
-          <div class="logo-card" data-num="12">
-            <div class="logo-num">#12</div>
-            <div class="logo-preview"><img src="logos/12-compass-go.svg" alt="Compass Go" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Compass Go</div>
-            <div class="logo-desc">Компас указывает путь — иди за мемами</div>
-          </div>
-
-          <div class="logo-card" data-num="13">
-            <div class="logo-num">#13</div>
-            <div class="logo-preview"><img src="logos/13-map-grid.svg" alt="Map Grid" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Map Grid</div>
-            <div class="logo-desc">Минималистичная карта — GPS-сетка города</div>
-          </div>
-
-          <div class="logo-card" data-num="14">
-            <div class="logo-num">#14</div>
-            <div class="logo-preview"><img src="logos/14-route-pulse.svg" alt="Route Pulse" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Route Pulse</div>
-            <div class="logo-desc">Маршрут с пульсом — активная прогулка</div>
-          </div>
-
-          <div class="logo-card" data-num="15">
-            <div class="logo-num">#15</div>
-            <div class="logo-preview"><img src="logos/15-location-ring.svg" alt="Location Ring" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Location Ring</div>
-            <div class="logo-desc">Концентрические кольца локации — ты в центре</div>
-          </div>
-
-          <div class="logo-card" data-num="16">
-            <div class="logo-num">#16</div>
-            <div class="logo-preview"><img src="logos/16-net-throw.svg" alt="Net Throw" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Net Throw</div>
-            <div class="logo-desc">Сеть ловли — бросок за редким мемом</div>
-          </div>
-
-          <div class="logo-card" data-num="17">
-            <div class="logo-num">#17</div>
-            <div class="logo-preview"><img src="logos/17-split-ball.svg" alt="Split Ball" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Split Ball</div>
-            <div class="logo-desc">Разделённый шар ловли — pink/purple split</div>
-          </div>
-
-          <div class="logo-card" data-num="18">
-            <div class="logo-num">#18</div>
-            <div class="logo-preview"><img src="logos/18-target-lock.svg" alt="Target Lock" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Target Lock</div>
-            <div class="logo-desc">Прицел на спавн — lock & catch</div>
-          </div>
-
-          <div class="logo-card" data-num="19" style="border-color:rgba(255,61,129,0.35)">
-            <div class="logo-num">#19 · DEFAULT</div>
-            <div class="logo-preview"><img src="logos/19-catch-hand.svg" alt="Catch Hand" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Catch Hand</div>
-            <div class="logo-desc">Рука ловли — белая + pink eyes, базовая расцветка</div>
-          </div>
-
-          <div class="logo-card" data-num="20">
-            <div class="logo-num">#20</div>
-            <div class="logo-preview"><img src="logos/20-spawn-pop.svg" alt="Spawn Pop" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Spawn Pop</div>
-            <div class="logo-desc">Pop-up спавн — мем появился рядом!</div>
-          </div>
-
-          <div class="logo-card" data-num="21">
-            <div class="logo-num">#21</div>
-            <div class="logo-preview"><img src="logos/21-bold-g.svg" alt="Bold G" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Bold G</div>
-            <div class="logo-desc">Буква G — Go, первый символ бренда</div>
-          </div>
-
-          <div class="logo-card" data-num="22">
-            <div class="logo-num">#22</div>
-            <div class="logo-preview"><img src="logos/22-bold-m.svg" alt="Bold M" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Bold M</div>
-            <div class="logo-desc">Буква M — Meme, второй символ бренда</div>
-          </div>
-
-          <div class="logo-card" data-num="23">
-            <div class="logo-num">#23</div>
-            <div class="logo-preview"><img src="logos/23-stacked-go.svg" alt="Stacked GoMem" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Stacked GoMem</div>
-            <div class="logo-desc">Go / Mem stacked — вертикальный wordmark</div>
-          </div>
-
-          <div class="logo-card" data-num="24">
-            <div class="logo-num">#24</div>
-            <div class="logo-preview"><img src="logos/24-infinity-go.svg" alt="Infinity Go" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Infinity Go</div>
-            <div class="logo-desc">Бесконечный loop — игровой цикл без конца</div>
-          </div>
-
-          <div class="logo-card" data-num="25">
-            <div class="logo-num">#25</div>
-            <div class="logo-preview"><img src="logos/25-hex-badge.svg" alt="Hex Badge" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Hex Badge</div>
-            <div class="logo-desc">Шестиугольник GM — gaming badge</div>
-          </div>
-
-          <div class="logo-card" data-num="26">
-            <div class="logo-num">#26</div>
-            <div class="logo-preview"><img src="logos/26-gome-coin.svg" alt="Gome Coin" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Gome Coin</div>
-            <div class="logo-desc">$GOMEME монета — токен проекта</div>
-          </div>
-
-          <div class="logo-card" data-num="27">
-            <div class="logo-num">#27</div>
-            <div class="logo-preview"><img src="logos/27-meme-wallet.svg" alt="Meme Wallet" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Meme Wallet</div>
-            <div class="logo-desc">Кошелёк $GOMEME — GOMEME Wallet</div>
-          </div>
-
-          <div class="logo-card" data-num="28">
-            <div class="logo-num">#28</div>
-            <div class="logo-preview"><img src="logos/28-diamond-hands.svg" alt="Diamond Hands" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Diamond Hands</div>
-            <div class="logo-desc">Diamond hands — держи Legendary</div>
-          </div>
-
-          <div class="logo-card" data-num="29">
-            <div class="logo-num">#29</div>
-            <div class="logo-preview"><img src="logos/29-chart-moon.svg" alt="Chart Moon" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Chart Moon</div>
-            <div class="logo-desc">График вверх — заработок на маркете</div>
-          </div>
-
-          <div class="logo-card" data-num="30">
-            <div class="logo-num">#30</div>
-            <div class="logo-preview"><img src="logos/30-coin-stack.svg" alt="Coin Stack" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Coin Stack</div>
-            <div class="logo-desc">Стопка монет $GOMEME — накопление</div>
-          </div>
-
-          <div class="logo-card" data-num="31">
-            <div class="logo-num">#31</div>
-            <div class="logo-preview"><img src="logos/31-legendary-star.svg" alt="Legendary Star" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Star</div>
-            <div class="logo-desc">Звезда Legendary — 1% spawn rate</div>
-          </div>
-
-          <div class="logo-card" data-num="32">
-            <div class="logo-num">#32</div>
-            <div class="logo-preview"><img src="logos/32-epic-crown.svg" alt="Epic Crown" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Epic Crown</div>
-            <div class="logo-desc">Корона Epic — редкость и статус</div>
-          </div>
-
-          <div class="logo-card" data-num="33">
-            <div class="logo-num">#33</div>
-            <div class="logo-preview"><img src="logos/33-dex-book.svg" alt="Brainrotdex" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Brainrotdex</div>
-            <div class="logo-desc">Книга коллекции — 120 мемов в MVP</div>
-          </div>
-
-          <div class="logo-card" data-num="34">
-            <div class="logo-num">#34</div>
-            <div class="logo-preview"><img src="logos/34-pvp-trophy.svg" alt="PvP Trophy" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">PvP Trophy</div>
-            <div class="logo-desc">Трофей ranked — победа в Deck Flip</div>
-          </div>
-
-          <div class="logo-card" data-num="35">
-            <div class="logo-num">#35</div>
-            <div class="logo-preview"><img src="logos/35-rarity-prism.svg" alt="Rarity Prism" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Rarity Prism</div>
-            <div class="logo-desc">Призма 5 редкостей — Common→Legendary</div>
-          </div>
-
-          <div class="logo-card" data-num="36">
-            <div class="logo-num">#36</div>
-            <div class="logo-preview"><img src="logos/36-clan-shield.svg" alt="Clan Shield" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Clan Shield</div>
-            <div class="logo-desc">Щит 9 кланов — биомы города</div>
-          </div>
-
-          <div class="logo-card" data-num="37">
-            <div class="logo-num">#37</div>
-            <div class="logo-preview"><img src="logos/37-biome-leaf.svg" alt="Biome Leaf" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Biome Leaf</div>
-            <div class="logo-desc">Animalini — парки и зоопарки</div>
-          </div>
-
-          <div class="logo-card" data-num="38">
-            <div class="logo-num">#38</div>
-            <div class="logo-preview"><img src="logos/38-coffee-clan.svg" alt="Drinkellini" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Drinkellini</div>
-            <div class="logo-desc">Кофейный клан — спавны у кафе</div>
-          </div>
-
-          <div class="logo-card" data-num="39">
-            <div class="logo-num">#39</div>
-            <div class="logo-preview"><img src="logos/39-music-clan.svg" alt="Musichini" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Musichini</div>
-            <div class="logo-desc">Музыкальный клан — клубы и концерты</div>
-          </div>
-
-          <div class="logo-card" data-num="40">
-            <div class="logo-num">#40</div>
-            <div class="logo-preview"><img src="logos/40-deck-flip.svg" alt="Deck Flip" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Deck Flip</div>
-            <div class="logo-desc">5 карт PvP — flip mechanic</div>
-          </div>
-
-          <div class="logo-card" data-num="41">
-            <div class="logo-num">#41</div>
-            <div class="logo-preview"><img src="logos/41-minimal-dot.svg" alt="Minimal Dot" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Minimal Dot</div>
-            <div class="logo-desc">Один pink dot — ultra minimal, запоминается</div>
-          </div>
-
-          <div class="logo-card" data-num="42">
-            <div class="logo-num">#42</div>
-            <div class="logo-preview"><img src="logos/42-gradient-orb.svg" alt="Gradient Orb" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Gradient Orb</div>
-            <div class="logo-desc">3D-сфера — premium crypto feel</div>
-          </div>
-
-          <div class="logo-card" data-num="43">
-            <div class="logo-num">#43</div>
-            <div class="logo-preview"><img src="logos/43-neon-outline.svg" alt="Neon GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Neon GM</div>
-            <div class="logo-desc">Neon outline GM — cyberpunk night city</div>
-          </div>
-
-          <div class="logo-card" data-num="44">
-            <div class="logo-num">#44</div>
-            <div class="logo-preview"><img src="logos/44-glass-card.svg" alt="Glass Card" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Glass Card</div>
-            <div class="logo-desc">Glassmorphism — modern app aesthetic</div>
-          </div>
-
-          <div class="logo-card" data-num="45">
-            <div class="logo-num">#45</div>
-            <div class="logo-preview"><img src="logos/45-holo-badge.svg" alt="Holo Badge" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Holo Badge</div>
-            <div class="logo-desc">Holographic badge — Legendary feel</div>
-          </div>
-
-          <div class="logo-card" data-num="46">
-            <div class="logo-num">#46</div>
-            <div class="logo-preview"><img src="logos/46-classic-meme.svg" alt="Classic Meme" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Classic Meme</div>
-            <div class="logo-desc">Классический trollface vibe — internet culture</div>
-          </div>
-
-          <div class="logo-card" data-num="47">
-            <div class="logo-num">#47</div>
-            <div class="logo-preview"><img src="logos/47-rot-skull.svg" alt="Rot Skull" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Rot Skull</div>
-            <div class="logo-desc">Playful skull — brainrot aesthetic</div>
-          </div>
-
-          <div class="logo-card" data-num="48" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#48 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/48-italian-stripe.svg" alt="Italian Stripe" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Italian Stripe</div>
-            <div class="logo-desc">IT-флаг + Legendary рамка — яркий оранжево-фиолетовый градиент</div>
-          </div>
-
-          <div class="logo-card" data-num="49">
-            <div class="logo-num">#49</div>
-            <div class="logo-preview"><img src="logos/49-glitch-face.svg" alt="Glitch Face" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Glitch Face</div>
-            <div class="logo-desc">Glitch aesthetic — viral broken meme</div>
-          </div>
-
-          <div class="logo-card" data-num="50">
-            <div class="logo-num">#50</div>
-            <div class="logo-preview"><img src="logos/50-fire-viral.svg" alt="Fire Viral" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Fire Viral</div>
-            <div class="logo-desc">Trending fire — мемы разлетаются viral</div>
-          </div>
-
-          <div class="logo-card" data-num="51" style="border-color:rgba(255,179,0,0.25)">
-            <div class="logo-num">#51 · EXOTIC</div>
-            <div class="logo-preview"><img src="logos/51-exotic-gm.svg" alt="Exotic GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Exotic GM</div>
-            <div class="logo-desc">Стиль карточки Exotic — золотая рамка + голо GM</div>
-          </div>
-
-          <div class="logo-card" data-num="52" style="border-color:rgba(255,179,0,0.25)">
-            <div class="logo-num">#52 · MYTHIC</div>
-            <div class="logo-preview"><img src="logos/52-mythic-gm.svg" alt="Mythic GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Mythic GM</div>
-            <div class="logo-desc">Mythic — золотое сияние, космическая туманность</div>
-          </div>
-
-          <div class="logo-card" data-num="53" style="border-color:rgba(255,179,0,0.25)">
-            <div class="logo-num">#53 · HOLO</div>
-            <div class="logo-preview"><img src="logos/53-holo-gm.svg" alt="Holo GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Holo GM</div>
-            <div class="logo-desc">Голографический фон как у Exotic-карты</div>
-          </div>
-
-          <div class="logo-card" data-num="54" style="border-color:rgba(255,179,0,0.25)">
-            <div class="logo-num">#54 · FRAME</div>
-            <div class="logo-preview"><img src="logos/54-golden-frame.svg" alt="Golden Frame" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Golden Frame</div>
-            <div class="logo-desc">Барокко-рамка Exotic + GM по центру</div>
-          </div>
-
-          <div class="logo-card" data-num="55" style="border-color:rgba(255,179,0,0.25)">
-            <div class="logo-num">#55 · COSMIC</div>
-            <div class="logo-preview"><img src="logos/55-cosmic-gm.svg" alt="Cosmic GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Cosmic GM</div>
-            <div class="logo-desc">Космос + туманность как фон Exotic-карты</div>
-          </div>
-
-          <div class="logo-card" data-num="56" style="border-color:rgba(255,179,0,0.25)">
-            <div class="logo-num">#56 · SHIELD</div>
-            <div class="logo-preview"><img src="logos/56-shield-gm.svg" alt="Shield GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Shield GM</div>
-            <div class="logo-desc">Щит с уровнем как на карточке + GM</div>
-          </div>
-
-          <div class="logo-card" data-num="57" style="border-color:rgba(255,179,0,0.25)">
-            <div class="logo-num">#57 · BANNER</div>
-            <div class="logo-preview"><img src="logos/57-banner-gm.svg" alt="Banner GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Banner GM</div>
-            <div class="logo-desc">EXOTIC-баннер сверху + золотой GM</div>
-          </div>
-
-          <div class="logo-card" data-num="58" style="border-color:rgba(255,179,0,0.25)">
-            <div class="logo-num">#58 · EMBOSS</div>
-            <div class="logo-preview"><img src="logos/58-emboss-gm.svg" alt="Emboss GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Emboss GM</div>
-            <div class="logo-desc">3D-объёмные золотые GM — premium TCG</div>
-          </div>
-
-          <div class="logo-card" data-num="59" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#59 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/59-legendary-gm.svg" alt="Legendary GM" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary GM</div>
-            <div class="logo-desc">Золотой GM на космическом оранжево-фиолетовом фоне</div>
-          </div>
-
-          <div class="logo-card" data-num="60" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#60 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/60-legendary-banner.svg" alt="Legendary Banner" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Banner</div>
-            <div class="logo-desc">Баннер LEGENDARY + GM — как на карточке</div>
-          </div>
-
-          <div class="logo-card" data-num="61" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#61 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/61-legendary-frame.svg" alt="Legendary Frame" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Frame</div>
-            <div class="logo-desc">Медная орнаментальная рамка + GM</div>
-          </div>
-
-          <div class="logo-card" data-num="62" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#62 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/62-legendary-holo.svg" alt="Legendary Holo" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Holo</div>
-            <div class="logo-desc">Радужный голо-градиент Legendary</div>
-          </div>
-
-          <div class="logo-card" data-num="63" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#63 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/63-legendary-star.svg" alt="Legendary Star" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Star</div>
-            <div class="logo-desc">Золотая звезда Legendary + GM</div>
-          </div>
-
-          <div class="logo-card" data-num="64" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#64 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/64-legendary-crown.svg" alt="Legendary Crown" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Crown</div>
-            <div class="logo-desc">Корона Legendary — статус и редкость</div>
-          </div>
-
-          <div class="logo-card" data-num="65" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#65 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/65-legendary-flame.svg" alt="Legendary Flame" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Flame</div>
-            <div class="logo-desc">Огненный оранжевый gradient — viral energy</div>
-          </div>
-
-          <div class="logo-card" data-num="66" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#66 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/66-legendary-coin.svg" alt="Legendary Coin" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Coin</div>
-            <div class="logo-desc">$GOMEME монета — золото Legendary</div>
-          </div>
-
-          <div class="logo-card" data-num="67" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#67 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/67-legendary-bolt.svg" alt="Legendary Bolt" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Bolt</div>
-            <div class="logo-desc">Молния в оранжево-золотых тонах</div>
-          </div>
-
-          <div class="logo-card" data-num="68" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#68 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/68-legendary-shield.svg" alt="Legendary Shield" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Shield</div>
-            <div class="logo-desc">Щит с уровнем 99 — Legendary badge</div>
-          </div>
-
-          <div class="logo-card" data-num="69" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#69 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/69-legendary-orbit.svg" alt="Legendary Orbit" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Orbit</div>
-            <div class="logo-desc">Космическая орбита — orange nebula</div>
-          </div>
-
-          <div class="logo-card" data-num="70" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#70 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/70-legendary-spark.svg" alt="Legendary Spark" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Spark</div>
-            <div class="logo-desc">Искры и сияние вокруг GM</div>
-          </div>
-
-          <div class="logo-card" data-num="71" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#71 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/71-legendary-stripes.svg" alt="Legendary Stripes" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Stripes</div>
-            <div class="logo-desc">Яркие полосы градиента Legendary</div>
-          </div>
-
-          <div class="logo-card" data-num="72" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#72 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/72-legendary-catch.svg" alt="Legendary Catch" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Catch</div>
-            <div class="logo-desc">Кольцо ловли — Legendary pink/orange split</div>
-          </div>
-
-          <div class="logo-card" data-num="73" style="border-color:rgba(255,140,0,0.35)">
-            <div class="logo-num">#73 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/73-legendary-pin.svg" alt="Legendary Pin" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Legendary Pin</div>
-            <div class="logo-desc">GPS-пин GM — золотой Legendary</div>
-          </div>
-
-          <div class="logo-card" data-num="74">
-            <div class="logo-num">#74 · COMMON</div>
-            <div class="logo-preview"><img src="logos/74-catch-common.svg" alt="Catch Common" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Catch · Common</div>
-            <div class="logo-desc">Catch Hand — серая расцветка Common</div>
-          </div>
-
-          <div class="logo-card" data-num="75">
-            <div class="logo-num">#75 · UNCOMMON</div>
-            <div class="logo-preview"><img src="logos/75-catch-uncommon.svg" alt="Catch Uncommon" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Catch · Uncommon</div>
-            <div class="logo-desc">Catch Hand — зелёная расцветка Uncommon</div>
-          </div>
-
-          <div class="logo-card" data-num="76">
-            <div class="logo-num">#76 · RARE</div>
-            <div class="logo-preview"><img src="logos/76-catch-rare.svg" alt="Catch Rare" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Catch · Rare</div>
-            <div class="logo-desc">Catch Hand — синяя расцветка Rare</div>
-          </div>
-
-          <div class="logo-card" data-num="77">
-            <div class="logo-num">#77 · EPIC</div>
-            <div class="logo-preview"><img src="logos/77-catch-epic.svg" alt="Catch Epic" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Catch · Epic</div>
-            <div class="logo-desc">Catch Hand — фиолетовая расцветка Epic</div>
-          </div>
-
-          <div class="logo-card" data-num="78">
-            <div class="logo-num">#78 · LEGENDARY</div>
-            <div class="logo-preview"><img src="logos/78-catch-legendary.svg" alt="Catch Legendary" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Catch · Legendary</div>
-            <div class="logo-desc">Catch Hand — оранжево-золотая Legendary</div>
-          </div>
-
-          <div class="logo-card" data-num="79">
-            <div class="logo-num">#79 · MYTHIC</div>
-            <div class="logo-preview"><img src="logos/79-catch-mythic.svg" alt="Catch Mythic" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Catch · Mythic</div>
-            <div class="logo-desc">Catch Hand — золотой космос Mythic</div>
-          </div>
-
-          <div class="logo-card" data-num="80">
-            <div class="logo-num">#80 · EXOTIC</div>
-            <div class="logo-preview"><img src="logos/80-catch-exotic.svg" alt="Catch Exotic" width="96" height="96" loading="lazy" /></div>
-            <div class="logo-name">Catch · Exotic</div>
-            <div class="logo-desc">Catch Hand — голографический радужный Exotic</div>
-          </div>
-
-        </div>
-
-        <p class="logo-hint" id="logo-hint">Напиши номер в Telegram: <strong>#01–#80</strong> — выбранный вариант доработаем в финальный app icon</p>
-      </div>
-    </section>
-
     <!-- Idea -->
     <section id="idea">
       <div class="container">
         <div class="section-label">Концепт</div>
-        <h2>Pokémon GO × Italian Brainrot</h2>
+        <h2>Italian Brainrot на карте города</h2>
         <p class="section-desc">
           Бесплатная игра с walk-to-earn механикой. Нашёл редкого на улице — продал на маркете — вывел.
           Купить Legendary в магазине можно, но за $1 500. Сообщение простое: <strong style="color:var(--text)">иди гуляй</strong>.
@@ -1288,6 +667,40 @@
           </div>
         </div>
 
+        <div class="section-label" style="margin-top:48px">7 уровней редкости</div>
+        <p class="section-desc" style="margin-bottom:24px">Каждый тир — свой дизайн карточки. От Common до Exotic.</p>
+
+        <div class="rarity-grid">
+          <div class="rarity-card">
+            <img src="cards/common.jpg" alt="Common" loading="lazy" />
+            <div class="r-label"><span class="rarity r-common">Common</span></div>
+          </div>
+          <div class="rarity-card">
+            <img src="cards/uncommon.jpg" alt="Uncommon" loading="lazy" />
+            <div class="r-label"><span class="rarity r-uncommon">Uncommon</span></div>
+          </div>
+          <div class="rarity-card">
+            <img src="cards/rare.jpg" alt="Rare" loading="lazy" />
+            <div class="r-label"><span class="rarity r-rare">Rare</span></div>
+          </div>
+          <div class="rarity-card">
+            <img src="cards/epic.jpg" alt="Epic" loading="lazy" />
+            <div class="r-label"><span class="rarity r-epic">Epic</span></div>
+          </div>
+          <div class="rarity-card">
+            <img src="cards/legendary.jpg" alt="Legendary" loading="lazy" />
+            <div class="r-label"><span class="rarity r-legendary">Legendary</span></div>
+          </div>
+          <div class="rarity-card">
+            <img src="cards/mythic.jpg" alt="Mythic" loading="lazy" />
+            <div class="r-label"><span class="rarity r-mythic">Mythic</span></div>
+          </div>
+          <div class="rarity-card">
+            <img src="cards/exotic.jpg" alt="Exotic" loading="lazy" />
+            <div class="r-label"><span class="rarity r-exotic">Exotic</span></div>
+          </div>
+        </div>
+
         <div class="table-wrap">
           <table>
             <thead>
@@ -1302,38 +715,52 @@
             <tbody>
               <tr>
                 <td><span class="rarity r-common">Common</span></td>
-                <td class="mono">60%</td>
-                <td class="mono">~50</td>
+                <td class="mono">58%</td>
+                <td class="mono">32</td>
                 <td class="mono">500 $GOMEME</td>
                 <td>~$5</td>
               </tr>
               <tr>
                 <td><span class="rarity r-uncommon">Uncommon</span></td>
-                <td class="mono">25%</td>
-                <td class="mono">~30</td>
+                <td class="mono">24%</td>
+                <td class="mono">21</td>
                 <td class="mono">2 000 $GOMEME</td>
                 <td>~$20</td>
               </tr>
               <tr>
                 <td><span class="rarity r-rare">Rare</span></td>
                 <td class="mono">10%</td>
-                <td class="mono">~25</td>
+                <td class="mono">22</td>
                 <td class="mono">8 000 $GOMEME</td>
                 <td>~$80</td>
               </tr>
               <tr>
                 <td><span class="rarity r-epic">Epic</span></td>
                 <td class="mono">4%</td>
-                <td class="mono">~12</td>
+                <td class="mono">29</td>
                 <td class="mono">30 000 $GOMEME</td>
                 <td>~$300</td>
               </tr>
               <tr>
                 <td><span class="rarity r-legendary">Legendary</span></td>
                 <td class="mono">1%</td>
-                <td class="mono">~13</td>
+                <td class="mono">16</td>
                 <td class="mono">150 000 $GOMEME</td>
                 <td><strong>~$1 500</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-mythic">Mythic</span></td>
+                <td class="mono">0.2%</td>
+                <td class="mono">ивенты</td>
+                <td class="mono">500 000 $GOMEME</td>
+                <td>~$5 000</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-exotic">Exotic</span></td>
+                <td class="mono">0.05%</td>
+                <td class="mono">ивенты</td>
+                <td class="mono">1 000 000 $GOMEME</td>
+                <td><strong>~$10 000</strong></td>
               </tr>
             </tbody>
           </table>
@@ -1673,24 +1100,11 @@
   </main>
 
   <footer>
-    <p>GOMEME · Italian Brainrot GO · v1.1.a</p>
+    <p>GOMEME · Italian Brainrot · v1.1.a</p>
     <p style="margin-top:8px">
       <a href="../install/index.html">Установка</a> ·
       <a href="https://t.me/GO_MEME_APP_BOT" target="_blank" rel="noopener">@GO_MEME_APP_BOT</a>
     </p>
   </footer>
-
-  <script>
-    document.querySelectorAll('.logo-card').forEach(card => {
-      card.addEventListener('click', () => {
-        document.querySelectorAll('.logo-card').forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        const num = card.dataset.num;
-        const name = card.querySelector('.logo-name').textContent;
-        document.getElementById('logo-hint').innerHTML =
-          'Выбран <strong>#' + num + ' ' + name + '</strong> — напиши этот номер в Telegram';
-      });
-    });
-  </script>
 </body>
 </html>
