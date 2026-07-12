@@ -647,7 +647,7 @@
     .rarity-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 12px;
+      gap: 16px;
       margin-bottom: 40px;
     }
     .rarity-card {
@@ -657,11 +657,18 @@
       overflow: hidden;
       text-align: center;
     }
+    .rarity-card .r-img-wrap {
+      padding: 10px 10px 0;
+      background: linear-gradient(180deg, #0d0d14 0%, var(--card) 100%);
+    }
     .rarity-card img {
       width: 100%;
-      aspect-ratio: 2/3;
-      object-fit: cover;
+      height: auto;
+      aspect-ratio: 9 / 16;
+      object-fit: contain;
+      object-position: center;
       display: block;
+      border-radius: 8px;
     }
     .rarity-card .r-label {
       padding: 10px 6px;
@@ -685,12 +692,24 @@
       .ticker { grid-template-columns: repeat(2, 1fr); }
       .cards-3, .token-grid, .roadmap, .clans, .plain-cols, .pie-section { grid-template-columns: 1fr; }
       .pie-chart-wrap { width: 200px; height: 200px; }
-      .rarity-grid { grid-template-columns: repeat(3, 1fr); }
+      .rarity-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
       .loop-arrow { display: none; }
       .loop { gap: 8px; }
     }
     @media (max-width: 480px) {
-      .rarity-grid { grid-template-columns: repeat(2, 1fr); }
+      .rarity-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 14px;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .rarity-card {
+        flex: 0 0 58%;
+        max-width: 220px;
+        scroll-snap-align: start;
+      }
     }
   </style>
 </head>
@@ -831,31 +850,31 @@
 
         <div class="rarity-grid">
           <div class="rarity-card">
-            <img src="cards/common.jpg" alt="Обычный" loading="lazy" />
+            <div class="r-img-wrap"><img src="cards/common.jpg" alt="Обычный" loading="lazy" /></div>
             <div class="r-label"><span class="rarity r-common">Обычный</span><span class="r-en">Common</span></div>
           </div>
           <div class="rarity-card">
-            <img src="cards/uncommon.jpg" alt="Необычный" loading="lazy" />
+            <div class="r-img-wrap"><img src="cards/uncommon.jpg" alt="Необычный" loading="lazy" /></div>
             <div class="r-label"><span class="rarity r-uncommon">Необычный</span><span class="r-en">Uncommon</span></div>
           </div>
           <div class="rarity-card">
-            <img src="cards/rare.jpg" alt="Редкий" loading="lazy" />
+            <div class="r-img-wrap"><img src="cards/rare.jpg" alt="Редкий" loading="lazy" /></div>
             <div class="r-label"><span class="rarity r-rare">Редкий</span><span class="r-en">Rare</span></div>
           </div>
           <div class="rarity-card">
-            <img src="cards/epic.jpg" alt="Эпический" loading="lazy" />
+            <div class="r-img-wrap"><img src="cards/epic.jpg" alt="Эпический" loading="lazy" /></div>
             <div class="r-label"><span class="rarity r-epic">Эпический</span><span class="r-en">Epic</span></div>
           </div>
           <div class="rarity-card">
-            <img src="cards/legendary.jpg" alt="Легендарный" loading="lazy" />
+            <div class="r-img-wrap"><img src="cards/legendary.jpg" alt="Легендарный" loading="lazy" /></div>
             <div class="r-label"><span class="rarity r-legendary">Легендарный</span><span class="r-en">Legendary</span></div>
           </div>
           <div class="rarity-card">
-            <img src="cards/mythic.jpg" alt="Мифический" loading="lazy" />
+            <div class="r-img-wrap"><img src="cards/mythic.jpg" alt="Мифический" loading="lazy" /></div>
             <div class="r-label"><span class="rarity r-mythic">Мифический</span><span class="r-en">Mythic</span></div>
           </div>
           <div class="rarity-card">
-            <img src="cards/exotic.jpg" alt="Экзотический" loading="lazy" />
+            <div class="r-img-wrap"><img src="cards/exotic.jpg" alt="Экзотический" loading="lazy" /></div>
             <div class="r-label"><span class="rarity r-exotic">Экзотический</span><span class="r-en">Exotic</span></div>
           </div>
         </div>
