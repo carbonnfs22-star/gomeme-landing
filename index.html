@@ -709,6 +709,7 @@
         <li><a href="#idea">Идея</a></li>
         <li><a href="#gameplay">Геймплей</a></li>
         <li><a href="#token">$GOMEME</a></li>
+        <li><a href="#earn">Заработок</a></li>
         <li><a href="#market">Маркет</a></li>
         <li><a href="#roadmap">Roadmap</a></li>
       </ul>
@@ -979,7 +980,7 @@
                 <li>Цены <strong>публичные</strong> — таблицы на этом сайте</li>
                 <li>Вывод с <strong>KYC и лимитами</strong> — защита от мошенников</li>
                 <li>40% токенов — <strong>игрокам</strong>, не основателям</li>
-                <li>Доля команды <strong>заблокирована на 4 года</strong></li>
+                <li>Доля команды <strong>разблокируется по годам</strong>, не одним дампом</li>
               </ul>
             </div>
             <div class="plain-card warn">
@@ -1023,7 +1024,7 @@
               </li>
               <li>
                 <span class="pie-dot" style="background:var(--pink)"></span>
-                <span>Команда — лок 4 года, cliff 1 год</span>
+                <span>Команда — 15%, вестинг 5 лет (см. #earn)</span>
                 <span class="amt">150M</span>
                 <span class="pct">15%</span>
               </li>
@@ -1148,7 +1149,7 @@
               <div class="alloc-track"><div class="alloc-fill" style="width:20%;background:var(--purple)"></div></div>
             </div>
             <div class="alloc-bar">
-              <div class="alloc-header"><span>Team · 4yr vest, 1yr cliff</span><span>15% · 150M</span></div>
+              <div class="alloc-header"><span>Team · 5yr progressive vest</span><span>15% · 150M</span></div>
               <div class="alloc-track"><div class="alloc-fill" style="width:15%;background:var(--pink)"></div></div>
             </div>
             <div class="alloc-bar">
@@ -1297,6 +1298,142 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Creator Earn -->
+    <section id="earn">
+      <div class="container">
+        <div class="section-label">Для создателя</div>
+        <h2>Как зарабатывает команда — и почему это не «4 года бесплатно»</h2>
+        <p class="section-desc">
+          Два разных канала: <strong style="color:var(--text)">реальные деньги сейчас</strong> (Phase 1) и
+          <strong style="color:var(--text)">доля токена позже</strong> (Phase 2, on-chain). Это не одно и то же.
+        </p>
+
+        <div class="plain-block">
+          <h3>🧾 Простыми словами</h3>
+          <p>
+            «Лок 4 года» на крипто-проектах часто звучит как «основатель 4 года голодает». <strong>Так не задумано.</strong>
+            Сейчас $GOMEME — <strong>игровая монета внутри приложения</strong>, не биржевой токен. Зарплата создателя в Phase 1 —
+            это <strong>доля от выручки</strong> (IAP + комиссия маркета), которую можно выводить как обычный доход бизнеса.
+            Токеновая доля 15% включается <strong>только после листинга</strong> и открывается <strong>порциями по годам</strong>,
+            чтобы никто — ни команда, ни инвестор — не обрушил игру одной продажей.
+          </p>
+        </div>
+
+        <div class="plain-cols" style="margin-bottom:40px">
+          <div class="plain-card good">
+            <h4>💵 Phase 1 — сейчас (in-game)</h4>
+            <ul>
+              <li><strong>IAP</strong> — покупки $GOMEME в App Store / Google Play (~70% после комиссии стора)</li>
+              <li><strong>8% fee</strong> с каждой сделки на P2P-маркете → treasury проекта</li>
+              <li><strong>Зарплата создателя</strong> — до <strong>45%</strong> чистой выручки treasury (остальное: серверы, арт, маркетинг)</li>
+              <li>Пример: выручка <strong>$10 000/мес</strong> → ~<strong>$3 000–4 500</strong> создателю уже сейчас</li>
+              <li>Это <strong>не токены</strong> — обычные деньги, без ожидания листинга</li>
+            </ul>
+          </div>
+          <div class="plain-card good">
+            <h4>🪙 Phase 2 — после листинга (on-chain)</h4>
+            <ul>
+              <li>Команда получает <strong>15% supply</strong> = 150M $GOMEME</li>
+              <li>Разблокировка <strong>по годам</strong>, не «всё сразу через 4 года»</li>
+              <li>Максимум <strong>25% от уже разблокированного</strong> можно продать в год (anti-rug)</li>
+              <li>Контракт: <strong>multisig + timelock</strong>, публичный дашборд вестинга</li>
+              <li>Цель — жить на Phase 1, а токены = бонус за рост экосистемы</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="font-size:18px;font-weight:700;margin-bottom:16px">График вестинга команды (150M $GOMEME)</h3>
+        <div class="table-wrap" style="margin-bottom:32px">
+          <table>
+            <thead>
+              <tr>
+                <th>Период</th>
+                <th>Разблокировка</th>
+                <th>Накопительно</th>
+                <th>≈ токенов</th>
+                <th>Зачем так</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>До листинга</td>
+                <td class="mono">0%</td>
+                <td class="mono">0%</td>
+                <td class="mono">0</td>
+                <td>Игра и экономика сначала, не pump</td>
+              </tr>
+              <tr>
+                <td>Мес 1–6 после листинга</td>
+                <td class="mono">0%</td>
+                <td class="mono">0%</td>
+                <td class="mono">0</td>
+                <td>Стабилизация курса, ликвидность</td>
+              </tr>
+              <tr>
+                <td><strong>Год 1</strong></td>
+                <td class="mono">+10%</td>
+                <td class="mono">10%</td>
+                <td class="mono">15M</td>
+                <td>Первая «зарплата» из токенов</td>
+              </tr>
+              <tr>
+                <td><strong>Год 2</strong></td>
+                <td class="mono">+15%</td>
+                <td class="mono">25%</td>
+                <td class="mono">37.5M</td>
+                <td>Рост DAU → рост ценности доли</td>
+              </tr>
+              <tr>
+                <td><strong>Год 3</strong></td>
+                <td class="mono">+20%</td>
+                <td class="mono">45%</td>
+                <td class="mono">67.5M</td>
+                <td>Середина — основной upside</td>
+              </tr>
+              <tr>
+                <td><strong>Год 4</strong></td>
+                <td class="mono">+20%</td>
+                <td class="mono">65%</td>
+                <td class="mono">97.5M</td>
+                <td>Команда мотивирована развивать игру</td>
+              </tr>
+              <tr>
+                <td><strong>Год 5</strong></td>
+                <td class="mono">+35%</td>
+                <td class="mono">100%</td>
+                <td class="mono">150M</td>
+                <td>Полная разблокировка</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="plain-cols">
+          <div class="plain-card good">
+            <h4>🛡 Как не заскамить игроков</h4>
+            <ul>
+              <li><strong>40% supply — игрокам</strong>, не основателям</li>
+              <li>Команда не может слить всё в день листинга</li>
+              <li>Лимит продаж: max 25% от unlocked / год</li>
+              <li>Treasury 20% — ликвидность и стабильность курса</li>
+              <li>Legendary supply cap + публичный trade log</li>
+              <li>Вывод игроков: KYC, hold 14 дней, лимит $500/день</li>
+            </ul>
+          </div>
+          <div class="plain-card warn">
+            <h4>⏱ Когда реально ждать деньги?</h4>
+            <ul>
+              <li><strong>Сейчас (Q3 2026):</strong> IAP + маркет → зарплата из выручки</li>
+              <li><strong>Q4 2026:</strong> вывод $GOMEME игрокам (KYC), команда — fiat из treasury</li>
+              <li><strong>2027+:</strong> листинг → первые 10% токенов команды (год 1)</li>
+              <li>Чем раньше DAU и маркет — тем раньше Phase 1 доход</li>
+              <li>Токен ≠ единственный заработок — это бонус, не зарплата с Day 1</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
