@@ -1,0 +1,36 @@
+<svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="holo" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#ff3d81"/><stop offset="0.2" stop-color="#7c5cff"/>
+  <stop offset="0.4" stop-color="#00e5ff"/><stop offset="0.6" stop-color="#00e676"/>
+  <stop offset="0.8" stop-color="#ffb300"/><stop offset="1" stop-color="#ff3d81"/>
+</linearGradient><linearGradient id="gold" x1="20" y1="10" x2="76" y2="86" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#fff8dc"/><stop offset="0.3" stop-color="#ffd700"/>
+  <stop offset="0.7" stop-color="#daa520"/><stop offset="1" stop-color="#b8860b"/>
+</linearGradient><radialGradient id="neb" cx="50%" cy="40%" r="60%">
+  <stop stop-color="#7c5cff" stop-opacity="0.6"/><stop offset="0.5" stop-color="#ff3d81" stop-opacity="0.4"/>
+  <stop offset="1" stop-color="#06060b"/>
+</radialGradient></defs>
+<rect width="96" height="96" rx="22" fill="#0a0812"/>
+<rect x="4" y="4" width="88" height="88" rx="18" fill="url(#neb)"/>
+<rect x="4" y="4" width="88" height="88" rx="18" fill="url(#holo)" opacity="0.35"/>
+
+  <circle cx="22" cy="24" r="1.2" fill="#fff" opacity="0.8"/>
+  <circle cx="74" cy="20" r="1" fill="#fff" opacity="0.6"/>
+  <circle cx="68" cy="72" r="1.2" fill="#fff" opacity="0.7"/>
+  <circle cx="18" cy="68" r="0.8" fill="#fff" opacity="0.5"/>
+  <circle cx="48" cy="16" r="0.8" fill="#ffd700" opacity="0.8"/>
+
+  <path d="M8 8h12v3H11v9H8V8z" fill="url(#gold)" opacity="0.9"/>
+  <path d="M88 8H76v3h9v9h3V8z" fill="url(#gold)" opacity="0.9"/>
+  <path d="M8 88h12v-3H11V76H8v12z" fill="url(#gold)" opacity="0.9"/>
+  <path d="M88 88H76v-3h9V76h3v12z" fill="url(#gold)" opacity="0.9"/>
+  <rect x="6" y="6" width="84" height="84" rx="16" stroke="url(#gold)" stroke-width="3" fill="none"/>
+  <rect x="10" y="10" width="76" height="76" rx="14" stroke="url(#gold)" stroke-width="1" fill="none" opacity="0.5"/>
+<rect x="18" y="14" width="60" height="14" rx="3" fill="#1a1020" stroke="url(#gold)" stroke-width="1"/>
+<text x="48" y="24" text-anchor="middle" fill="url(#gold)" font-family="Georgia,serif" font-size="9" font-weight="700" letter-spacing="2">EXOTIC</text>
+
+  <text x="48" y="58" text-anchor="middle" fill="none" stroke="#5a4000" stroke-width="2.5"
+    font-family="Georgia,serif" font-size="34" font-weight="900" letter-spacing="-1">GM</text>
+  <text x="48" y="58" text-anchor="middle" fill="url(#gold)"
+    font-family="Georgia,serif" font-size="34" font-weight="900" letter-spacing="-1">GM</text>
+</svg>
