@@ -527,8 +527,8 @@
       margin-bottom: 12px;
     }
     .logo-preview {
-      width: 88px;
-      height: 88px;
+      width: 96px;
+      height: 96px;
       margin: 0 auto 14px;
       border-radius: 22px;
       background: var(--bg-2);
@@ -536,10 +536,15 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     }
     .logo-preview svg {
-      width: 64px;
-      height: 64px;
+      width: 96px;
+      height: 96px;
+      display: block;
+    }
+    .logo-card {
+      cursor: pointer;
     }
     .logo-name {
       font-size: 14px;
@@ -639,43 +644,46 @@
         <div class="section-label">Брендинг</div>
         <h2>10 вариантов иконки</h2>
         <p class="section-desc">
-          App icon для GOMEME — каждый вариант заточен под разный смысл бренда:
-          walk-to-earn, мемы, GPS, коллекция, $BRAIN. Выбери номер — зафиксируем.
+          App icon для <strong style="color:var(--text)">GoMem</strong> — 10 концепций, каждая с отдельной логикой:
+          GPS, ловля, мемы, коллекция, $BRAIN. Тапни на понравившийся → напиши номер в Telegram.
         </p>
 
-        <div class="logo-grid">
+        <div class="logo-grid" id="logo-grid">
 
           <!-- 01 Go Pin -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="01">
             <div class="logo-num">#01</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="url(#lg01)"/>
+                <path d="M48 18C35.85 18 26 27.85 26 40c0 18 22 44 22 44s22-26 22-44C70 27.85 60.15 18 48 18z" fill="#fff" opacity="0.95"/>
+                <path d="M48 30c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10z" fill="url(#lg01)"/>
+                <path d="M43 36h10v3h-4v12h-2V39h-4v-3z" fill="#fff"/>
                 <defs>
-                  <linearGradient id="g1" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+                  <linearGradient id="lg01" x1="12" y1="8" x2="84" y2="88" gradientUnits="userSpaceOnUse">
                     <stop stop-color="#ff3d81"/><stop offset="1" stop-color="#7c5cff"/>
                   </linearGradient>
                 </defs>
-                <path d="M32 4C21.5 4 13 12.5 13 23c0 14.5 19 37 19 37s19-22.5 19-37C51 12.5 42.5 4 32 4z" fill="url(#g1)"/>
-                <path d="M32 14c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10z" fill="#06060b"/>
-                <path d="M28 22h8v2h-3v10h-2V24h-3v-2z" fill="#ff3d81"/>
               </svg>
             </div>
             <div class="logo-name">Go Pin</div>
-            <div class="logo-desc">GPS-пин с «G» — иди на улицу, лови мемов рядом</div>
+            <div class="logo-desc">GPS-пин с «G» — Go + Meme на карте, иди ловить рядом</div>
           </div>
 
           <!-- 02 Catch Ring -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="02">
             <div class="logo-num">#02</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="26" stroke="#7c5cff" stroke-width="3" stroke-dasharray="8 5" opacity="0.7"/>
-                <circle cx="32" cy="32" r="18" stroke="#ff3d81" stroke-width="2.5"/>
-                <circle cx="26" cy="28" r="3" fill="#f4f4f8"/>
-                <circle cx="38" cy="28" r="3" fill="#f4f4f8"/>
-                <path d="M24 38 Q32 46 40 38" stroke="#f4f4f8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <circle cx="26" cy="28" r="1.2" fill="#06060b"/>
-                <circle cx="38" cy="28" r="1.2" fill="#06060b"/>
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="#0c0c14"/>
+                <circle cx="48" cy="48" r="34" stroke="#7c5cff" stroke-width="2.5" stroke-dasharray="10 6" opacity="0.6"/>
+                <circle cx="48" cy="48" r="24" stroke="#ff3d81" stroke-width="3"/>
+                <circle cx="40" cy="42" r="4.5" fill="#f4f4f8"/>
+                <circle cx="56" cy="42" r="4.5" fill="#f4f4f8"/>
+                <circle cx="40" cy="42" r="2" fill="#06060b"/>
+                <circle cx="56" cy="42" r="2" fill="#06060b"/>
+                <path d="M36 56 Q48 68 60 56" stroke="#f4f4f8" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <circle cx="48" cy="48" r="3" fill="#ff3d81" opacity="0.5"/>
               </svg>
             </div>
             <div class="logo-name">Catch Ring</div>
@@ -683,49 +691,57 @@
           </div>
 
           <!-- 03 GM Monogram -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="03">
             <div class="logo-num">#03</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="4" y="4" width="56" height="56" rx="14" fill="#11111a" stroke="#2d2d44" stroke-width="1.5"/>
-                <path d="M18 44V20h10c6 0 10 3.5 10 9.5S34 39 28 39h-4v5H18zm8-12h4c2.5 0 4-1.5 4-4s-1.5-4-4-4h-4v8z" fill="#f4f4f8"/>
-                <path d="M38 44l8-24h6l8 24h-6l-1.5-5h-7l-1.5 5H38zm10-9l-2.5-8-2.5 8h5z" fill="#ff3d81"/>
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="url(#lg03)"/>
+                <text x="48" y="62" text-anchor="middle" fill="#fff" font-family="DM Sans, sans-serif" font-size="36" font-weight="900" letter-spacing="-2">GM</text>
+                <defs>
+                  <linearGradient id="lg03" x1="8" y1="8" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#1a1a28"/><stop offset="1" stop-color="#11111a"/>
+                  </linearGradient>
+                </defs>
+                <rect x="8" y="8" width="80" height="80" rx="18" stroke="#ff3d81" stroke-width="2" fill="none" opacity="0.4"/>
               </svg>
             </div>
             <div class="logo-name">GM Monogram</div>
-            <div class="logo-desc">G + M — чистый wordmark, узнаваем на App Store</div>
+            <div class="logo-desc">Go + Meme = GM — чистый wordmark, узнаваем на App Store</div>
           </div>
 
           <!-- 04 Brain Coin -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="04">
             <div class="logo-num">#04</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="28" fill="#11111a" stroke="#00e676" stroke-width="2"/>
-                <path d="M32 14c-6 0-10 4-10 9 0 2 1 3.5 2.5 4.5-2 1-3.5 3.5-3.5 6.5 0 4 3.5 7.5 8 7.5h6c4.5 0 8-3.5 8-7.5 0-3-1.5-5.5-3.5-6.5 1.5-1 2.5-2.5 2.5-4.5 0-5-4-9-10-9z" fill="#ff3d81"/>
-                <path d="M28 26c0-2 1.5-3.5 4-3.5s4 1.5 4 3.5" stroke="#06060b" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M26 34c2 2 4 3 6 3s4-1 6-3" stroke="#06060b" stroke-width="1.5" stroke-linecap="round"/>
-                <text x="32" y="52" text-anchor="middle" fill="#00e676" font-family="monospace" font-size="8" font-weight="600">$</text>
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="#0a1a12"/>
+                <circle cx="48" cy="48" r="36" stroke="#00e676" stroke-width="2.5"/>
+                <path d="M48 22c-7 0-12 5-12 11 0 2.5 1.5 4.5 3 5.5-2.5 1.5-4 4.5-4 8 0 5 4.5 9.5 10 9.5h6c5.5 0 10-4.5 10-9.5 0-3.5-1.5-6.5-4-8 1.5-1 3-3 3-5.5 0-6-5-11-12-11z" fill="#ff3d81"/>
+                <path d="M42 38c0-2.5 2-4.5 6-4.5s6 2 6 4.5" stroke="#06060b" stroke-width="2" stroke-linecap="round"/>
+                <path d="M38 50c3 3 6 4.5 10 4.5s7-1.5 10-4.5" stroke="#06060b" stroke-width="2" stroke-linecap="round"/>
+                <text x="48" y="78" text-anchor="middle" fill="#00e676" font-family="monospace" font-size="14" font-weight="700">$</text>
               </svg>
             </div>
             <div class="logo-name">Brain Coin</div>
-            <div class="logo-desc">Brainrot + $BRAIN — мем-культура и токен в одном</div>
+            <div class="logo-desc">Brainrot + $BRAIN — мем-культура и токен в одной иконке</div>
           </div>
 
           <!-- 05 Play Go -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="05">
             <div class="logo-num">#05</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="url(#lg05)"/>
+                <path d="M38 26 L38 70 L68 48 Z" fill="#fff"/>
+                <circle cx="30" cy="30" r="4" fill="#06060b" opacity="0.5"/>
+                <circle cx="30" cy="66" r="4" fill="#06060b" opacity="0.5"/>
+                <circle cx="30" cy="30" r="1.5" fill="#fff"/>
+                <circle cx="30" cy="66" r="1.5" fill="#fff"/>
                 <defs>
-                  <linearGradient id="g5" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+                  <linearGradient id="lg05" x1="8" y1="8" x2="88" y2="88" gradientUnits="userSpaceOnUse">
                     <stop stop-color="#ff3d81"/><stop offset="1" stop-color="#7c5cff"/>
                   </linearGradient>
                 </defs>
-                <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#g5)"/>
-                <path d="M26 18 L26 46 L46 32 Z" fill="#f4f4f8"/>
-                <circle cx="22" cy="22" r="2.5" fill="#06060b" opacity="0.6"/>
-                <circle cx="22" cy="42" r="2.5" fill="#06060b" opacity="0.6"/>
               </svg>
             </div>
             <div class="logo-name">Play Go</div>
@@ -733,16 +749,17 @@
           </div>
 
           <!-- 06 Card Stack -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="06">
             <div class="logo-num">#06</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="14" y="18" width="28" height="36" rx="4" fill="#2d2d44" transform="rotate(-8 28 36)"/>
-                <rect x="18" y="14" width="28" height="36" rx="4" fill="#7c5cff" opacity="0.5" transform="rotate(4 32 32)"/>
-                <rect x="20" y="10" width="28" height="36" rx="4" fill="#11111a" stroke="#ff3d81" stroke-width="2"/>
-                <circle cx="34" cy="24" r="6" fill="#ff3d81" opacity="0.3"/>
-                <rect x="26" y="34" width="16" height="3" rx="1.5" fill="#ff3d81"/>
-                <rect x="26" y="40" width="10" height="2" rx="1" fill="#55556a"/>
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="#11111a"/>
+                <rect x="20" y="28" width="36" height="48" rx="5" fill="#2d2d44" transform="rotate(-10 38 52)"/>
+                <rect x="26" y="22" width="36" height="48" rx="5" fill="#7c5cff" opacity="0.45" transform="rotate(5 44 46)"/>
+                <rect x="28" y="16" width="36" height="48" rx="5" fill="#1a1a28" stroke="#ff3d81" stroke-width="2.5"/>
+                <circle cx="46" cy="32" r="8" fill="#ff3d81" opacity="0.35"/>
+                <rect x="36" y="46" width="20" height="4" rx="2" fill="#ff3d81"/>
+                <rect x="36" y="54" width="14" height="3" rx="1.5" fill="#55556a"/>
               </svg>
             </div>
             <div class="logo-name">Card Stack</div>
@@ -750,19 +767,20 @@
           </div>
 
           <!-- 07 Radar Spawn -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="07">
             <div class="logo-num">#07</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="32" r="26" stroke="#1e1e2e" stroke-width="2"/>
-                <circle cx="32" cy="32" r="18" stroke="#2d2d44" stroke-width="1.5"/>
-                <circle cx="32" cy="32" r="10" stroke="#2d2d44" stroke-width="1"/>
-                <path d="M32 32 L32 6 A26 26 0 0 1 52 18 Z" fill="#ff3d81" opacity="0.25"/>
-                <path d="M32 32 L32 6" stroke="#ff3d81" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="32" cy="32" r="4" fill="#ff3d81"/>
-                <circle cx="44" cy="22" r="3" fill="#00e676"/>
-                <circle cx="20" cy="38" r="2.5" fill="#7c5cff"/>
-                <circle cx="40" cy="42" r="2" fill="#ffb300"/>
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="#0c0c14"/>
+                <circle cx="48" cy="48" r="36" stroke="#1e1e2e" stroke-width="2"/>
+                <circle cx="48" cy="48" r="26" stroke="#2d2d44" stroke-width="1.5"/>
+                <circle cx="48" cy="48" r="16" stroke="#2d2d44" stroke-width="1"/>
+                <path d="M48 48 L48 12 A36 36 0 0 1 72 24 Z" fill="#ff3d81" opacity="0.3"/>
+                <path d="M48 48 L48 12" stroke="#ff3d81" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="48" cy="48" r="5" fill="#ff3d81"/>
+                <circle cx="64" cy="30" r="4" fill="#00e676"/>
+                <circle cx="28" cy="56" r="3.5" fill="#7c5cff"/>
+                <circle cx="60" cy="60" r="3" fill="#ffb300"/>
               </svg>
             </div>
             <div class="logo-name">Radar Spawn</div>
@@ -770,21 +788,22 @@
           </div>
 
           <!-- 08 Meme Bolt -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="08">
             <div class="logo-num">#08</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="url(#lg08)"/>
+                <path d="M54 10 L24 54 h20 L30 86 L72 42 H52 L54 10Z" fill="#fff" opacity="0.95"/>
+                <circle cx="42" cy="34" r="4.5" fill="#ff3d81"/>
+                <circle cx="56" cy="34" r="4.5" fill="#ff3d81"/>
+                <circle cx="42" cy="34" r="2" fill="#06060b"/>
+                <circle cx="56" cy="34" r="2" fill="#06060b"/>
+                <path d="M38 46 Q49 54 60 46" stroke="#06060b" stroke-width="2.5" stroke-linecap="round" fill="none"/>
                 <defs>
-                  <linearGradient id="g8" x1="16" y1="4" x2="48" y2="60" gradientUnits="userSpaceOnUse">
+                  <linearGradient id="lg08" x1="16" y1="8" x2="80" y2="88" gradientUnits="userSpaceOnUse">
                     <stop stop-color="#ff3d81"/><stop offset="1" stop-color="#7c5cff"/>
                   </linearGradient>
                 </defs>
-                <path d="M36 4 L16 36 h14 L22 60 L48 28 H34 L36 4Z" fill="url(#g8)"/>
-                <circle cx="28" cy="22" r="3" fill="#f4f4f8"/>
-                <circle cx="38" cy="22" r="3" fill="#f4f4f8"/>
-                <circle cx="28" cy="22" r="1.2" fill="#06060b"/>
-                <circle cx="38" cy="22" r="1.2" fill="#06060b"/>
-                <path d="M26 30 Q33 36 40 30" stroke="#06060b" stroke-width="2" stroke-linecap="round" fill="none"/>
               </svg>
             </div>
             <div class="logo-name">Meme Bolt</div>
@@ -792,16 +811,17 @@
           </div>
 
           <!-- 09 AR Lens -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="09">
             <div class="logo-num">#09</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="8" y="18" width="48" height="32" rx="8" stroke="#7c5cff" stroke-width="2.5" fill="#11111a"/>
-                <circle cx="32" cy="34" r="10" stroke="#ff3d81" stroke-width="2" fill="none"/>
-                <circle cx="32" cy="34" r="4" fill="#ff3d81"/>
-                <circle cx="34" cy="32" r="1.5" fill="#f4f4f8"/>
-                <rect x="24" y="12" width="16" height="6" rx="3" fill="#7c5cff"/>
-                <path d="M20 50 L24 46 M44 50 L40 46" stroke="#55556a" stroke-width="2" stroke-linecap="round"/>
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="#11111a"/>
+                <rect x="12" y="28" width="72" height="48" rx="10" stroke="#7c5cff" stroke-width="3" fill="#0c0c14"/>
+                <circle cx="48" cy="52" r="14" stroke="#ff3d81" stroke-width="2.5" fill="none"/>
+                <circle cx="48" cy="52" r="6" fill="#ff3d81"/>
+                <circle cx="50" cy="50" r="2" fill="#f4f4f8"/>
+                <rect x="36" y="18" width="24" height="8" rx="4" fill="#7c5cff"/>
+                <path d="M30 76 L36 70 M66 76 L60 70" stroke="#55556a" stroke-width="2.5" stroke-linecap="round"/>
               </svg>
             </div>
             <div class="logo-name">AR Lens</div>
@@ -809,25 +829,24 @@
           </div>
 
           <!-- 10 Pixel GO -->
-          <div class="logo-card">
+          <div class="logo-card" data-num="10">
             <div class="logo-num">#10</div>
             <div class="logo-preview">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="6" y="6" width="52" height="52" rx="4" fill="#11111a" stroke="#2d2d44" stroke-width="2"/>
-                <!-- Pixel G -->
-                <rect x="14" y="16" width="4" height="20" fill="#ff3d81"/>
-                <rect x="18" y="16" width="8" height="4" fill="#ff3d81"/>
-                <rect x="22" y="20" width="4" height="8" fill="#ff3d81"/>
-                <rect x="18" y="28" width="8" height="4" fill="#ff3d81"/>
-                <rect x="14" y="32" width="12" height="4" fill="#ff3d81"/>
-                <!-- Pixel O / arrow -->
-                <rect x="36" y="16" width="4" height="16" fill="#7c5cff"/>
-                <rect x="40" y="16" width="8" height="4" fill="#7c5cff"/>
-                <rect x="44" y="20" width="4" height="8" fill="#7c5cff"/>
-                <rect x="40" y="28" width="8" height="4" fill="#7c5cff"/>
-                <rect x="36" y="32" width="4" height="4" fill="#7c5cff"/>
-                <rect x="40" y="36" width="8" height="4" fill="#00e676"/>
-                <rect x="48" y="32" width="4" height="4" fill="#00e676"/>
+              <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="96" height="96" rx="22" fill="#11111a"/>
+                <rect x="10" y="10" width="76" height="76" rx="6" fill="#0c0c14" stroke="#2d2d44" stroke-width="2"/>
+                <rect x="20" y="24" width="6" height="28" fill="#ff3d81"/>
+                <rect x="26" y="24" width="12" height="6" fill="#ff3d81"/>
+                <rect x="32" y="30" width="6" height="12" fill="#ff3d81"/>
+                <rect x="26" y="36" width="12" height="6" fill="#ff3d81"/>
+                <rect x="20" y="42" width="18" height="6" fill="#ff3d81"/>
+                <rect x="52" y="24" width="6" height="22" fill="#7c5cff"/>
+                <rect x="58" y="24" width="12" height="6" fill="#7c5cff"/>
+                <rect x="64" y="30" width="6" height="10" fill="#7c5cff"/>
+                <rect x="58" y="36" width="12" height="6" fill="#7c5cff"/>
+                <rect x="52" y="42" width="6" height="6" fill="#7c5cff"/>
+                <rect x="58" y="48" width="12" height="6" fill="#00e676"/>
+                <rect x="70" y="42" width="6" height="6" fill="#00e676"/>
               </svg>
             </div>
             <div class="logo-name">Pixel GO</div>
@@ -836,7 +855,7 @@
 
         </div>
 
-        <p class="logo-hint">Напиши номер в Telegram: <strong>#01–#10</strong> — выбранный вариант доработаем в финальный app icon</p>
+        <p class="logo-hint" id="logo-hint">Напиши номер в Telegram: <strong>#01–#10</strong> — выбранный вариант доработаем в финальный app icon</p>
       </div>
     </section>
 
@@ -1300,5 +1319,18 @@
       <a href="https://t.me/GO_MEME_APP_BOT" target="_blank" rel="noopener">@GO_MEME_APP_BOT</a>
     </p>
   </footer>
+
+  <script>
+    document.querySelectorAll('.logo-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.logo-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        const num = card.dataset.num;
+        const name = card.querySelector('.logo-name').textContent;
+        document.getElementById('logo-hint').innerHTML =
+          'Выбран <strong>#' + num + ' ' + name + '</strong> — напиши этот номер в Telegram';
+      });
+    });
+  </script>
 </body>
 </html>
