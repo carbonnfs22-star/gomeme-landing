@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A0A0F" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="GOMEME" />
+  <title>GOMEME — Web Play</title>
+  <meta name="description" content="GOMEME в браузере: карта, коллекция, PvP. Тест с iPhone и Android." />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700;9..40,900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body data-page="home">
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="logo">
+        <img src="assets/icon-192.png" alt="GOMEME" width="32" height="32" />
+        GO<span>MEME</span>
+      </div>
+      <div class="badge">Web Preview</div>
+    </header>
+
+    <main class="screen">
+      <section class="hero">
+        <h1>Играй в браузере.<br><span class="grad">Без установки.</span></h1>
+        <p>Тестовая web-версия GOMEME для iPhone и Android. Карта с GPS, коллекция и PvP Arena — прямо в Safari или Chrome.</p>
+      </section>
+
+      <div class="stats-row" id="stats">
+        <div class="stat"><div class="val" id="stat-catches">0</div><div class="lbl">Поймано</div></div>
+        <div class="stat"><div class="val" id="stat-cards">0</div><div class="lbl">В коллекции</div></div>
+        <div class="stat"><div class="val" id="stat-coins">0</div><div class="lbl">$GOMEME</div></div>
+      </div>
+
+      <div class="section-title">Режимы</div>
+      <div class="tile-grid">
+        <a class="tile pink wide" href="map.html">
+          <div>
+            <div class="label">🗺 Карта</div>
+            <div class="sub">GPS · ловля мемов рядом</div>
+          </div>
+          <div class="icon">→</div>
+        </a>
+        <a class="tile purple" href="pvp.html">
+          <div class="icon">⚔️</div>
+          <div class="label">PvP Arena</div>
+          <div class="sub">Deck Flip · 6 карт</div>
+        </a>
+        <a class="tile lime" href="collection.html">
+          <div class="icon">🃏</div>
+          <div class="label">Коллекция</div>
+          <div class="sub">Brainrotdex</div>
+        </a>
+        <a class="tile gold wide" href="profile.html">
+          <div>
+            <div class="label">👤 Профиль</div>
+            <div class="sub">Статистика и настройки</div>
+          </div>
+          <div class="icon">→</div>
+        </a>
+      </div>
+
+      <div class="install-banner" id="install-hint" hidden>
+        <strong>Добавь на экран «Домой»</strong> — Safari → Поделиться → «На экран Домой». Будет как приложение без App Store.
+      </div>
+
+      <footer class="note">v1.1.a web · дизайн Lovable добавим позже</footer>
+    </main>
+  </div>
+
+  <nav class="tabbar" aria-label="Навигация">
+    <a class="tab active" href="index.html"><span class="ico">🏠</span>Главная</a>
+    <a class="tab" href="map.html"><span class="ico">🗺</span>Карта</a>
+    <a class="tab" href="collection.html"><span class="ico">🃏</span>Коллекция</a>
+    <a class="tab" href="pvp.html"><span class="ico">⚔️</span>PvP</a>
+  </nav>
+
+  <script type="module">
+    import { loadState } from './js/storage.js';
+
+    const state = loadState();
+    document.getElementById('stat-catches').textContent = state.catches;
+    document.getElementById('stat-cards').textContent = state.collection.length;
+    document.getElementById('stat-coins').textContent = state.coins;
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+      || window.navigator.standalone === true;
+    if (!isStandalone && /iPhone|iPad|Android/i.test(navigator.userAgent)) {
+      document.getElementById('install-hint').hidden = false;
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>
