@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GOMEME — Walk-to-Earn Brainrot</title>
+  <meta name="description" content="GPS-коллекционная игра: лови Italian Brainrot на улице, торгуй на маркете, зарабатывай $GOMEME." />
+  <meta property="og:title" content="GOMEME — Italian Brainrot" />
+  <meta property="og:description" content="GPS-коллекционная игра с Italian Brainrot. Токен $GOMEME, P2P-маркет, walk-to-earn." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06060b;
+      --bg-2: #0c0c14;
+      --card: #11111a;
+      --border: #1e1e2e;
+      --border-hi: #2d2d44;
+      --text: #f4f4f8;
+      --muted: #8b8ba3;
+      --dim: #55556a;
+      --pink: #ff3d81;
+      --pink-dim: rgba(255, 61, 129, 0.12);
+      --purple: #7c5cff;
+      --purple-dim: rgba(124, 92, 255, 0.12);
+      --green: #00e676;
+      --green-dim: rgba(0, 230, 118, 0.1);
+      --gold: #ffb300;
+      --radius: 16px;
+      --radius-lg: 24px;
+      --font: 'DM Sans', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,61,129,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,61,129,0.03) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 { top: -200px; left: -100px; background: var(--pink); }
+    .glow-2 { top: 40%; right: -200px; background: var(--purple); }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(6, 6, 11, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .logo img {
+      height: 36px;
+      width: auto;
+    }
+    .logo-text {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 4px;
+    }
+    .logo-text span { color: var(--pink); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* Layout */
+    main { position: relative; z-index: 1; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 96px 0; }
+    section:first-of-type { padding-top: 140px; }
+
+    /* Hero */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--pink-dim);
+      border: 1px solid rgba(255,61,129,0.25);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--pink);
+      margin-bottom: 24px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+    h1 .grad {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(17px, 2.5vw, 20px);
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 36px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 56px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--pink); color: #fff; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-hi);
+    }
+    .btn-ghost:hover { border-color: var(--muted); }
+
+    /* Ticker */
+    .ticker {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .ticker-item {
+      background: var(--card);
+      padding: 20px 24px;
+    }
+    .ticker-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 6px;
+    }
+    .ticker-value {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .ticker-value.accent { color: var(--green); }
+    .ticker-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* Section headers */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 640px;
+      margin-bottom: 48px;
+    }
+
+    /* Cards grid */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--border-hi); }
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .card-icon.pink { background: var(--pink-dim); }
+    .card-icon.purple { background: var(--purple-dim); }
+    .card-icon.green { background: var(--green-dim); }
+    .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+    /* Loop diagram */
+    .loop {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+    .loop-step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      text-align: center;
+      min-width: 140px;
+    }
+    .loop-step .num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--pink);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .loop-step .title { font-weight: 700; font-size: 14px; }
+    .loop-step .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .loop-arrow {
+      color: var(--dim);
+      font-size: 20px;
+      padding: 0 8px;
+    }
+
+    /* Tables */
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead { background: var(--bg-2); }
+    th {
+      text-align: left;
+      padding: 14px 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--dim);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    td strong, td .val { color: var(--text); font-weight: 600; }
+    td .mono { font-family: var(--mono); font-size: 13px; }
+    .rarity {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .r-common { background: rgba(89,107,109,0.2); color: #9aaeb0; }
+    .r-uncommon { background: rgba(56,177,24,0.15); color: #38b118; }
+    .r-rare { background: rgba(1,177,226,0.15); color: #01b1e2; }
+    .r-epic { background: rgba(161,1,233,0.15); color: #c040ff; }
+    .r-legendary { background: rgba(215,78,10,0.15); color: #ff7a30; }
+    .r-mythic { background: rgba(199,137,26,0.15); color: #e8b040; }
+    .r-exotic { background: rgba(3,249,0,0.12); color: #03f900; }
+
+    /* Tokenomics split */
+    .token-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .alloc-bar {
+      margin-bottom: 16px;
+    }
+    .alloc-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .alloc-header span:first-child { color: var(--text); font-weight: 600; }
+    .alloc-header span:last-child { font-family: var(--mono); color: var(--muted); font-size: 12px; }
+    .alloc-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .alloc-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .phase-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .phase-tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: transparent;
+      cursor: default;
+    }
+    .phase-tab.active {
+      background: var(--purple-dim);
+      border-color: rgba(124,92,255,0.4);
+      color: var(--purple);
+    }
+
+    /* Pie chart + plain-language tokenomics */
+    .plain-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 32px;
+    }
+    .plain-block h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .plain-block p, .plain-block li {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .plain-block ul { padding-left: 20px; margin: 12px 0; }
+    .plain-block li { margin-bottom: 8px; }
+    .plain-block strong { color: var(--text); }
+    .plain-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .plain-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .plain-card.good { border-color: rgba(0,230,118,0.35); }
+    .plain-card.warn { border-color: rgba(255,179,0,0.35); }
+    .plain-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .plain-card.good h4 { color: var(--green); }
+    .plain-card.warn h4 { color: var(--gold); }
+
+    .pie-section {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .pie-chart-wrap {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      margin: 0 auto;
+    }
+    .pie-chart {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--green) 0deg 144deg,
+        var(--purple) 144deg 216deg,
+        var(--pink) 216deg 270deg,
+        #42a5f5 270deg 306deg,
+        var(--gold) 306deg 342deg,
+        #ff6b6b 342deg 360deg
+      );
+      box-shadow: 0 0 40px rgba(124,92,255,0.15);
+    }
+    .pie-hole {
+      position: absolute;
+      inset: 28%;
+      border-radius: 50%;
+      background: var(--card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .pie-hole .total { font-size: 22px; font-weight: 900; color: var(--text); }
+    .pie-hole .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .pie-legend { list-style: none; }
+    .pie-legend li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .pie-legend li:last-child { border-bottom: none; }
+    .pie-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .pie-legend .pct {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .pie-legend .amt {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      min-width: 48px;
+      text-align: right;
+    }
+    .flow-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 16px;
+    }
+    .flow-step {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .flow-arrow { color: var(--dim); font-size: 18px; }
+
+    /* Clans */
+    .clans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .clan {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .clan-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .clan-name { font-weight: 700; font-size: 14px; }
+    .clan-loc { font-size: 12px; color: var(--muted); }
+
+    /* Roadmap */
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .rm-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      position: relative;
+    }
+    .rm-item.done { border-color: rgba(0,230,118,0.3); }
+    .rm-item.current { border-color: rgba(255,61,129,0.4); }
+    .rm-phase {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+    .rm-item.done .rm-phase { color: var(--green); }
+    .rm-item.current .rm-phase { color: var(--pink); }
+    .rm-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+    .rm-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* Disclaimer */
+    .disclaimer {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      font-size: 13px;
+      color: var(--dim);
+      line-height: 1.7;
+    }
+    .disclaimer strong { color: var(--muted); }
+
+    /* CTA */
+    .cta-block {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,61,129,0.08), rgba(124,92,255,0.08));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 64px 32px;
+    }
+    .cta-block h2 { margin-bottom: 12px; }
+    .cta-block p { color: var(--muted); margin-bottom: 32px; font-size: 17px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--dim);
+      font-size: 13px;
+      position: relative;
+      z-index: 1;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--pink); }
+
+    /* Rarity cards */
+    .rarity-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .rarity-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-align: center;
+    }
+    .rarity-card .r-img-wrap {
+      padding: 10px 10px 0;
+      background: linear-gradient(180deg, #0d0d14 0%, var(--card) 100%);
+    }
+    .rarity-card img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 9 / 16;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      border-radius: 8px;
+    }
+    .rarity-card .r-label {
+      padding: 10px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+    }
+    .rarity-card .r-en {
+      display: block;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--dim);
+      margin-top: 2px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .ticker { grid-template-columns: repeat(2, 1fr); }
+      .cards-3, .token-grid, .roadmap, .clans, .plain-cols, .pie-section { grid-template-columns: 1fr; }
+      .pie-chart-wrap { width: 200px; height: 200px; }
+      .rarity-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .loop-arrow { display: none; }
+      .loop { gap: 8px; }
+    }
+    @media (max-width: 480px) {
+      .rarity-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 14px;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .rarity-card {
+        flex: 0 0 58%;
+        max-width: 220px;
+        scroll-snap-align: start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <nav>
+    <div class="nav-inner">
+      <a class="logo" href="#">
+        <img src="official/logo-2-gradient-96.png" alt="GOMEME" width="36" height="36" />
+        <span class="logo-text">GO<span>MEME</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#idea">Идея</a></li>
+        <li><a href="#gameplay">Геймплей</a></li>
+        <li><a href="#token">$GOMEME</a></li>
+        <li><a href="#earn">Заработок</a></li>
+        <li><a href="#market">Маркет</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+      </ul>
+      <a class="nav-cta" href="#download">Скачать APK</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero -->
+    <section>
+      <div class="container">
+        <div class="hero-badge">v1.1.a · MVP live</div>
+        <h1>Лови мемов.<br>Торгуй картами.<br><span class="grad">Зарабатывай $GOMEME.</span></h1>
+        <p class="hero-sub">
+          GOMEME — GPS-коллекционная игра с Italian Brainrot.
+          Ходи по городу, лови Tralalero на улице, продавай редких на маркете.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#download">📱 Android APK</a>
+          <a class="btn btn-ghost" href="#token">Токеномика $GOMEME</a>
+        </div>
+
+        <div class="ticker">
+          <div class="ticker-item">
+            <div class="ticker-label">Токен</div>
+            <div class="ticker-value">$GOMEME</div>
+            <div class="ticker-sub">GOMEME Coin</div>
+          </div>
+          <div class="ticker-item">
+            <div class="ticker-label">Курс IAP</div>
+            <div class="ticker-value accent">100 ≈ $0.99</div>
+            <div class="ticker-sub">App Store / Google Play</div>
+          </div>
+          <div class="ticker-item">
+            <div class="ticker-label">Коллекция</div>
+            <div class="ticker-value">120</div>
+            <div class="ticker-sub">мемов в MVP · 380 в roadmap</div>
+          </div>
+          <div class="ticker-item">
+            <div class="ticker-label">Комиссия маркета</div>
+            <div class="ticker-value">8%</div>
+            <div class="ticker-sub">burn / treasury</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download -->
+    <section id="download">
+      <div class="container">
+        <div class="section-label">Android</div>
+        <h2>Скачать APK</h2>
+        <p class="section-desc">Прямая ссылка · v1.2.3 · ~105 MB · BlueStacks / телефон</p>
+        <div class="cta-block" style="padding:40px 32px">
+          <a class="btn btn-primary" style="display:inline-block;width:auto;padding:16px 32px"
+             href="https://expo.dev/artifacts/eas/Sj4XbLNKXx481lo_NjT3mKYtr2FB9Vmc28LqdPfQJx4.apk">
+            ⬇️ Скачать gomeme-v1.2.3.apk
+          </a>
+          <p style="color:var(--muted);font-size:13px;margin-top:16px;word-break:break-all">
+            https://expo.dev/artifacts/eas/Sj4XbLNKXx481lo_NjT3mKYtr2FB9Vmc28LqdPfQJx4.apk
+          </p>
+          <p style="color:var(--dim);font-size:13px;margin-top:12px">
+            Установи APK → разреши «неизвестные источники». Фикс зависания на BlueStacks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Idea -->
+    <section id="idea">
+      <div class="container">
+        <div class="section-label">Концепт</div>
+        <h2>Italian Brainrot на карте города</h2>
+        <p class="section-desc">
+          Бесплатная игра с walk-to-earn механикой. Нашёл редкого на улице — продал на маркете — вывел.
+          Купить Legendary в магазине можно, но за $1 500. Сообщение простое: <strong style="color:var(--text)">иди гуляй</strong>.
+        </p>
+
+        <div class="cards-3">
+          <div class="card">
+            <div class="card-icon pink">🗺</div>
+            <h3>GPS-карта</h3>
+            <p>Спавны рядом с тобой. 1–3 мема в радиусе 200 м. Кланы привязаны к биомам: Drinkellini у кофеен, Musichini у клубов.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon purple">📸</div>
+            <h3>AR-ловля</h3>
+            <p>Камера, plane detection, мем на экране. Удержание 2 сек — поймал. Fallback без AR для старых устройств.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon green">💰</div>
+            <h3>P2P-маркет</h3>
+            <p>Выстави карту, покупатель платит в $GOMEME. Комиссия 8%. Legendary-трейды публичны. KYC на вывод.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gameplay loop -->
+    <section id="gameplay">
+      <div class="container">
+        <div class="section-label">Геймплей</div>
+        <h2>Игровой цикл</h2>
+        <p class="section-desc">От спавна на карте до заработка на маркете — полный loop за одну прогулку.</p>
+
+        <div class="loop">
+          <div class="loop-step">
+            <div class="num">01</div>
+            <div class="title">Карта</div>
+            <div class="sub">GPS · спавн рядом</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="num">02</div>
+            <div class="title">Ловля</div>
+            <div class="sub">AR / 2D catch</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="num">03</div>
+            <div class="title">Коллекция</div>
+            <div class="sub">Brainrotdex</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="num">04</div>
+            <div class="title">PvP Deck Flip</div>
+            <div class="sub">5 карт · ranked</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-step">
+            <div class="num">05</div>
+            <div class="title">Маркет</div>
+            <div class="sub">продажа → $GOMEME</div>
+          </div>
+        </div>
+
+        <div class="section-label" style="margin-top:48px">7 уровней редкости</div>
+        <p class="section-desc" style="margin-bottom:24px">Каждый тир — свой дизайн карточки. От Common до Exotic.</p>
+
+        <div class="rarity-grid">
+          <div class="rarity-card">
+            <div class="r-img-wrap"><img src="cards/common.jpg" alt="Обычный" loading="lazy" /></div>
+            <div class="r-label"><span class="rarity r-common">Обычный</span><span class="r-en">Common</span></div>
+          </div>
+          <div class="rarity-card">
+            <div class="r-img-wrap"><img src="cards/uncommon.jpg" alt="Необычный" loading="lazy" /></div>
+            <div class="r-label"><span class="rarity r-uncommon">Необычный</span><span class="r-en">Uncommon</span></div>
+          </div>
+          <div class="rarity-card">
+            <div class="r-img-wrap"><img src="cards/rare.jpg" alt="Редкий" loading="lazy" /></div>
+            <div class="r-label"><span class="rarity r-rare">Редкий</span><span class="r-en">Rare</span></div>
+          </div>
+          <div class="rarity-card">
+            <div class="r-img-wrap"><img src="cards/epic.jpg" alt="Эпический" loading="lazy" /></div>
+            <div class="r-label"><span class="rarity r-epic">Эпический</span><span class="r-en">Epic</span></div>
+          </div>
+          <div class="rarity-card">
+            <div class="r-img-wrap"><img src="cards/legendary.jpg" alt="Легендарный" loading="lazy" /></div>
+            <div class="r-label"><span class="rarity r-legendary">Легендарный</span><span class="r-en">Legendary</span></div>
+          </div>
+          <div class="rarity-card">
+            <div class="r-img-wrap"><img src="cards/mythic.jpg" alt="Мифический" loading="lazy" /></div>
+            <div class="r-label"><span class="rarity r-mythic">Мифический</span><span class="r-en">Mythic</span></div>
+          </div>
+          <div class="rarity-card">
+            <div class="r-img-wrap"><img src="cards/exotic.jpg" alt="Экзотический" loading="lazy" /></div>
+            <div class="r-label"><span class="rarity r-exotic">Экзотический</span><span class="r-en">Exotic</span></div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Редкость</th>
+                <th>Spawn rate</th>
+                <th>Кол-во (MVP)</th>
+                <th>Цена в магазине</th>
+                <th>~USD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rarity r-common">Обычный</span></td>
+                <td class="mono">58%</td>
+                <td class="mono">32</td>
+                <td class="mono">500 $GOMEME</td>
+                <td>~$5</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-uncommon">Необычный</span></td>
+                <td class="mono">24%</td>
+                <td class="mono">21</td>
+                <td class="mono">2 000 $GOMEME</td>
+                <td>~$20</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-rare">Редкий</span></td>
+                <td class="mono">10%</td>
+                <td class="mono">22</td>
+                <td class="mono">8 000 $GOMEME</td>
+                <td>~$80</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-epic">Эпический</span></td>
+                <td class="mono">4%</td>
+                <td class="mono">29</td>
+                <td class="mono">30 000 $GOMEME</td>
+                <td>~$300</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-legendary">Легендарный</span></td>
+                <td class="mono">1%</td>
+                <td class="mono">16</td>
+                <td class="mono">150 000 $GOMEME</td>
+                <td><strong>~$1 500</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-mythic">Мифический</span></td>
+                <td class="mono">0.2%</td>
+                <td class="mono">ивенты</td>
+                <td class="mono">500 000 $GOMEME</td>
+                <td>~$5 000</td>
+              </tr>
+              <tr>
+                <td><span class="rarity r-exotic">Экзотический</span></td>
+                <td class="mono">0.05%</td>
+                <td class="mono">ивенты</td>
+                <td class="mono">1 000 000 $GOMEME</td>
+                <td><strong>~$10 000</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-label" style="margin-top:48px">9 кланов × биомы</div>
+        <div class="clans">
+          <div class="clan"><div class="clan-dot" style="background:#ff6b6b"></div><div><div class="clan-name">Drinkellini</div><div class="clan-loc">Кафе, центр города</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#ffd93d"></div><div><div class="clan-name">Bombardini</div><div class="clan-loc">Аэропорты, промзоны</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#6bcb77"></div><div><div class="clan-name">Animalini</div><div class="clan-loc">Парки, зоопарки</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#4d96ff"></div><div><div class="clan-name">Oceanini</div><div class="clan-loc">Водоёмы, пляжи</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#c77dff"></div><div><div class="clan-name">Musichini</div><div class="clan-loc">Концерты, клубы</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#ff9f43"></div><div><div class="clan-name">Foodini</div><div class="clan-loc">Рестораны, ТЦ</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#a8dadc"></div><div><div class="clan-name">Robotini</div><div class="clan-loc">Офисы, электроника</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#e63946"></div><div><div class="clan-name">Banditini</div><div class="clan-loc">Ночью, переулки</div></div></div>
+          <div class="clan"><div class="clan-dot" style="background:#7b2ff7"></div><div><div class="clan-name">Cosmicini</div><div class="clan-loc">Редко, ивенты</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tokenomics -->
+    <section id="token">
+      <div class="container">
+        <div class="section-label">Токеномика</div>
+        <h2>$GOMEME — GOMEME Coin</h2>
+        <p class="section-desc">
+          Единая валюта маркета, магазина и PvP-ставок. v1 — in-game ledger (централизованный).
+          v2 — опциональный on-chain (SPL / ERC-20) после юридической проработки.
+        </p>
+
+        <div class="phase-tabs">
+          <div class="phase-tab active">Phase 1 · In-game (сейчас)</div>
+          <div class="phase-tab">Phase 2 · On-chain (v2)</div>
+        </div>
+
+        <div class="plain-block">
+          <h3>🧠 Простыми словами — что такое $GOMEME?</h3>
+          <p>
+            <strong>$GOMEME — это игровые монеты</strong>, как робуксы в Roblox или V-Bucks в Fortnite.
+            Сейчас (Phase 1) они живут <strong>только внутри игры</strong> — это не криптовалюта на бирже.
+            Покупаешь за реальные деньги через App Store → тратишь в магазине и на маркете → можешь заработать, продав карту другому игроку.
+          </p>
+          <div class="flow-steps">
+            <span class="flow-step">🎮 Играешь бесплатно</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">🃏 Ловишь / собираешь карты</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">🏪 Продаёшь на маркете</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">💵 Выводишь (v2, с лимитами)</span>
+          </div>
+          <div class="plain-cols">
+            <div class="plain-card good">
+              <h4>✅ Признаки нормального проекта</h4>
+              <ul>
+                <li>Игра <strong>бесплатная</strong> — не просим денег вперёд</li>
+                <li>Нет обещаний «100% прибыли» или «пассивного дохода»</li>
+                <li>Цены <strong>публичные</strong> — таблицы на этом сайте</li>
+                <li>Вывод с <strong>KYC и лимитами</strong> — защита от мошенников</li>
+                <li>40% токенов — <strong>игрокам</strong>, не основателям</li>
+                <li>Доля команды <strong>разблокируется по годам</strong>, не одним дампом</li>
+              </ul>
+            </div>
+            <div class="plain-card warn">
+              <h4>⚠️ Честно о рисках</h4>
+              <ul>
+                <li>Это <strong>игра</strong>, не банковский вклад — можно проиграть на ставках PvP</li>
+                <li>Курс $GOMEME может меняться, если выйдем на биржу (v2)</li>
+                <li>Вывод появится <strong>не сразу</strong> — сначала in-game экономика</li>
+                <li>Редкие карты дорогие — <strong>выгоднее гулять</strong>, чем покупать</li>
+                <li>Никто не гарантирует, что Legendary вырастет в цене</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="pie-section">
+          <div class="pie-chart-wrap">
+            <div class="pie-chart" role="img" aria-label="Распределение 1 миллиарда $GOMEME"></div>
+            <div class="pie-hole">
+              <div class="total">1B</div>
+              <div class="sub">$GOMEME<br>всего</div>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:8px">Куда делятся все монеты (Phase 2)</h3>
+            <p style="color:var(--muted);font-size:14px;margin-bottom:16px">
+              Если запустим токен на блокчейне — вот «пицца» из 1 000 000 000 $GOMEME. Каждый кусок — кому и зачем.
+            </p>
+            <ul class="pie-legend">
+              <li>
+                <span class="pie-dot" style="background:var(--green)"></span>
+                <span>Игрокам — награды, walk-to-earn</span>
+                <span class="amt">400M</span>
+                <span class="pct">40%</span>
+              </li>
+              <li>
+                <span class="pie-dot" style="background:var(--purple)"></span>
+                <span>Казна и ликвидность (стабильность курса)</span>
+                <span class="amt">200M</span>
+                <span class="pct">20%</span>
+              </li>
+              <li>
+                <span class="pie-dot" style="background:var(--pink)"></span>
+                <span>Команда — 15%, вестинг 5 лет (см. #earn)</span>
+                <span class="amt">150M</span>
+                <span class="pct">15%</span>
+              </li>
+              <li>
+                <span class="pie-dot" style="background:#42a5f5"></span>
+                <span>Маркетинг и партнёрства</span>
+                <span class="amt">100M</span>
+                <span class="pct">10%</span>
+              </li>
+              <li>
+                <span class="pie-dot" style="background:var(--gold)"></span>
+                <span>Ивенты и экосистема</span>
+                <span class="amt">100M</span>
+                <span class="pct">10%</span>
+              </li>
+              <li>
+                <span class="pie-dot" style="background:#ff6b6b"></span>
+                <span>Airdrop сообществу</span>
+                <span class="amt">50M</span>
+                <span class="pct">5%</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="token-grid">
+          <div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Параметр</th>
+                    <th>Значение</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Тикер</td>
+                    <td class="mono"><strong>$GOMEME</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Название</td>
+                    <td>GOMEME Coin</td>
+                  </tr>
+                  <tr>
+                    <td>Тип (v1)</td>
+                    <td>In-game currency · GOMEME Wallet</td>
+                  </tr>
+                  <tr>
+                    <td>Тип (v2)</td>
+                    <td>SPL / ERC-20 (опционально)</td>
+                  </tr>
+                  <tr>
+                    <td>Total Supply (v2)</td>
+                    <td class="mono">1 000 000 000</td>
+                  </tr>
+                  <tr>
+                    <td>Курс IAP</td>
+                    <td class="mono">100 $GOMEME = $0.99</td>
+                  </tr>
+                  <tr>
+                    <td>Inflation</td>
+                    <td>Контролируемая · IAP mint only</td>
+                  </tr>
+                  <tr>
+                    <td>Deflation</td>
+                    <td>8% market fee · burn / treasury</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>IAP-пакет</th>
+                    <th>$GOMEME</th>
+                    <th>~USD</th>
+                    <th>Бонус</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Starter</td>
+                    <td class="mono">100</td>
+                    <td>$0.99</td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>Walker</td>
+                    <td class="mono">500</td>
+                    <td>$4.99</td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>Hunter</td>
+                    <td class="mono">2 000</td>
+                    <td>$19.99</td>
+                    <td>+5%</td>
+                  </tr>
+                  <tr>
+                    <td>Legend</td>
+                    <td class="mono">10 000</td>
+                    <td>$99.99</td>
+                    <td>+10%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size:16px;font-weight:700;margin-bottom:20px">Распределение supply (v2 on-chain)</h3>
+
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Player Rewards & Walk-to-Earn</span><span>40% · 400M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:40%;background:var(--green)"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Treasury & Liquidity</span><span>20% · 200M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:20%;background:var(--purple)"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Team · 5yr progressive vest</span><span>15% · 150M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:15%;background:var(--pink)"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Marketing & Partnerships</span><span>10% · 100M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:10%;background:#42a5f5"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Ecosystem / Events</span><span>10% · 100M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:10%;background:var(--gold)"></div></div>
+            </div>
+            <div class="alloc-bar">
+              <div class="alloc-header"><span>Community Airdrop</span><span>5% · 50M</span></div>
+              <div class="alloc-track"><div class="alloc-fill" style="width:5%;background:#ff6b6b"></div></div>
+            </div>
+
+            <div class="table-wrap" style="margin-top:24px">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Утилити $GOMEME</th>
+                    <th>Описание</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Магазин</strong></td><td>Mint карточек от студии</td></tr>
+                  <tr><td><strong>P2P-маркет</strong></td><td>Торговля между игроками</td></tr>
+                  <tr><td><strong>PvP Stakes</strong></td><td>Ставки 50–500 $GOMEME в ranked</td></tr>
+                  <tr><td><strong>Косметика</strong></td><td>Скины, рамки, эмоции</td></tr>
+                  <tr><td><strong>Вывод</strong></td><td>$GOMEME → fiat / USDC (v2, KYC)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Market & Earn -->
+    <section id="market">
+      <div class="container">
+        <div class="section-label">Экономика</div>
+        <h2>Маркет и заработок</h2>
+        <p class="section-desc">Walk-to-earn lite: без вложений, но с реальным вторичным рынком коллекционных карт.</p>
+
+        <div class="cards-3" style="margin-bottom:48px">
+          <div class="card">
+            <div class="card-icon green">🚶</div>
+            <h3>Walk-to-Earn</h3>
+            <p>Поймал Rare+ → шанс Brain Dust (10–50 $GOMEME). Продал на маркете → 100% минус 8% fee. PvP win → +25 $GOMEME.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon pink">🏪</div>
+            <h3>P2P-маркет</h3>
+            <p>Продавец ставит цену сам. Floor hint = shop × 0.7. Max 5 листингов. Legendary trades — публичный лог.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon purple">🏦</div>
+            <h3>Вывод</h3>
+            <p>KYC 18+. Min 10 000 $GOMEME (~$100). Fee 5%. Лимит $500/день. Новые аккаунты — hold 14 дней.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Действие</th>
+                <th>Награда</th>
+                <th>Условия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Поймал Common</td>
+                <td class="mono">0 $GOMEME</td>
+                <td>Только карта в коллекцию</td>
+              </tr>
+              <tr>
+                <td>Поймал Rare+</td>
+                <td class="mono">10–50 $GOMEME</td>
+                <td>Brain Dust · случайный шанс</td>
+              </tr>
+              <tr>
+                <td>Продажа на маркете</td>
+                <td class="mono">цена − 8%</td>
+                <td>P2P · buy now / аукцион</td>
+              </tr>
+              <tr>
+                <td>PvP ranked win</td>
+                <td class="mono">+25 $GOMEME</td>
+                <td>+ карта в stake mode</td>
+              </tr>
+              <tr>
+                <td>Stake mode</td>
+                <td class="mono">+180 $GOMEME</td>
+                <td>Оба ставят 100 → победитель забирает</td>
+              </tr>
+              <tr>
+                <td>PvP low stakes</td>
+                <td class="mono">50 $GOMEME</td>
+                <td>DPS ±10% matchmaking</td>
+              </tr>
+              <tr>
+                <td>PvP high stakes</td>
+                <td class="mono">500 $GOMEME</td>
+                <td>Лига Gold+ · DPS ±5%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Правило маркета</th>
+                <th>Значение</th>
+                <th>Зачем</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Комиссия платформы</td>
+                <td class="mono">8%</td>
+                <td>Burn или treasury · анти-инфляция</td>
+              </tr>
+              <tr>
+                <td>Мин. цена Common</td>
+                <td class="mono">100 $GOMEME</td>
+                <td>Анти-спам листингов</td>
+              </tr>
+              <tr>
+                <td>Max листингов</td>
+                <td class="mono">5 / аккаунт</td>
+                <td>Анти-bot</td>
+              </tr>
+              <tr>
+                <td>Hold новых аккаунтов</td>
+                <td class="mono">14 дней</td>
+                <td>Анти-fraud перед выводом</td>
+              </tr>
+              <tr>
+                <td>Legendary supply cap</td>
+                <td class="mono">29 max</td>
+                <td>Прозрачный circulation log</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Creator Earn -->
+    <section id="earn">
+      <div class="container">
+        <div class="section-label">Для создателя</div>
+        <h2>Как зарабатывает команда — и почему это не «4 года бесплатно»</h2>
+        <p class="section-desc">
+          Два разных канала: <strong style="color:var(--text)">реальные деньги сейчас</strong> (Phase 1) и
+          <strong style="color:var(--text)">доля токена позже</strong> (Phase 2, on-chain). Это не одно и то же.
+        </p>
+
+        <div class="plain-block">
+          <h3>🧾 Простыми словами</h3>
+          <p>
+            «Лок 4 года» на крипто-проектах часто звучит как «основатель 4 года голодает». <strong>Так не задумано.</strong>
+            Сейчас $GOMEME — <strong>игровая монета внутри приложения</strong>, не биржевой токен. Зарплата создателя в Phase 1 —
+            это <strong>доля от выручки</strong> (IAP + комиссия маркета), которую можно выводить как обычный доход бизнеса.
+            Токеновая доля 15% включается <strong>только после листинга</strong> и открывается <strong>порциями по годам</strong>,
+            чтобы никто — ни команда, ни инвестор — не обрушил игру одной продажей.
+          </p>
+        </div>
+
+        <div class="plain-cols" style="margin-bottom:40px">
+          <div class="plain-card good">
+            <h4>💵 Phase 1 — сейчас (in-game)</h4>
+            <ul>
+              <li><strong>IAP</strong> — покупки $GOMEME в App Store / Google Play (~70% после комиссии стора)</li>
+              <li><strong>8% fee</strong> с каждой сделки на P2P-маркете → treasury проекта</li>
+              <li><strong>Зарплата создателя</strong> — до <strong>45%</strong> чистой выручки treasury (остальное: серверы, арт, маркетинг)</li>
+              <li>Пример: выручка <strong>$10 000/мес</strong> → ~<strong>$3 000–4 500</strong> создателю уже сейчас</li>
+              <li>Это <strong>не токены</strong> — обычные деньги, без ожидания листинга</li>
+            </ul>
+          </div>
+          <div class="plain-card good">
+            <h4>🪙 Phase 2 — после листинга (on-chain)</h4>
+            <ul>
+              <li>Команда получает <strong>15% supply</strong> = 150M $GOMEME</li>
+              <li>Разблокировка <strong>по годам</strong>, не «всё сразу через 4 года»</li>
+              <li>Максимум <strong>25% от уже разблокированного</strong> можно продать в год (anti-rug)</li>
+              <li>Контракт: <strong>multisig + timelock</strong>, публичный дашборд вестинга</li>
+              <li>Цель — жить на Phase 1, а токены = бонус за рост экосистемы</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="font-size:18px;font-weight:700;margin-bottom:16px">График вестинга команды (150M $GOMEME)</h3>
+        <div class="table-wrap" style="margin-bottom:32px">
+          <table>
+            <thead>
+              <tr>
+                <th>Период</th>
+                <th>Разблокировка</th>
+                <th>Накопительно</th>
+                <th>≈ токенов</th>
+                <th>Зачем так</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>До листинга</td>
+                <td class="mono">0%</td>
+                <td class="mono">0%</td>
+                <td class="mono">0</td>
+                <td>Игра и экономика сначала, не pump</td>
+              </tr>
+              <tr>
+                <td>Мес 1–6 после листинга</td>
+                <td class="mono">0%</td>
+                <td class="mono">0%</td>
+                <td class="mono">0</td>
+                <td>Стабилизация курса, ликвидность</td>
+              </tr>
+              <tr>
+                <td><strong>Год 1</strong></td>
+                <td class="mono">+10%</td>
+                <td class="mono">10%</td>
+                <td class="mono">15M</td>
+                <td>Первая «зарплата» из токенов</td>
+              </tr>
+              <tr>
+                <td><strong>Год 2</strong></td>
+                <td class="mono">+15%</td>
+                <td class="mono">25%</td>
+                <td class="mono">37.5M</td>
+                <td>Рост DAU → рост ценности доли</td>
+              </tr>
+              <tr>
+                <td><strong>Год 3</strong></td>
+                <td class="mono">+20%</td>
+                <td class="mono">45%</td>
+                <td class="mono">67.5M</td>
+                <td>Середина — основной upside</td>
+              </tr>
+              <tr>
+                <td><strong>Год 4</strong></td>
+                <td class="mono">+20%</td>
+                <td class="mono">65%</td>
+                <td class="mono">97.5M</td>
+                <td>Команда мотивирована развивать игру</td>
+              </tr>
+              <tr>
+                <td><strong>Год 5</strong></td>
+                <td class="mono">+35%</td>
+                <td class="mono">100%</td>
+                <td class="mono">150M</td>
+                <td>Полная разблокировка</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="plain-cols">
+          <div class="plain-card good">
+            <h4>🛡 Как не заскамить игроков</h4>
+            <ul>
+              <li><strong>40% supply — игрокам</strong>, не основателям</li>
+              <li>Команда не может слить всё в день листинга</li>
+              <li>Лимит продаж: max 25% от unlocked / год</li>
+              <li>Treasury 20% — ликвидность и стабильность курса</li>
+              <li>Legendary supply cap + публичный trade log</li>
+              <li>Вывод игроков: KYC, hold 14 дней, лимит $500/день</li>
+            </ul>
+          </div>
+          <div class="plain-card warn">
+            <h4>⏱ Когда реально ждать деньги?</h4>
+            <ul>
+              <li><strong>Сейчас (Q3 2026):</strong> IAP + маркет → зарплата из выручки</li>
+              <li><strong>Q4 2026:</strong> вывод $GOMEME игрокам (KYC), команда — fiat из treasury</li>
+              <li><strong>2027+:</strong> листинг → первые 10% токенов команды (год 1)</li>
+              <li>Чем раньше DAU и маркет — тем раньше Phase 1 доход</li>
+              <li>Токен ≠ единственный заработок — это бонус, не зарплата с Day 1</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap">
+      <div class="container">
+        <div class="section-label">Roadmap</div>
+        <h2>Этапы развития</h2>
+        <p class="section-desc">От MVP с 120 мемами до полного каталога 380 + on-chain $GOMEME.</p>
+
+        <div class="roadmap">
+          <div class="rm-item done">
+            <div class="rm-phase">✓ DONE</div>
+            <div class="rm-title">Wave 0 — Assets</div>
+            <div class="rm-desc">380 мемов в реестре, 361 art source, build pipeline, карточки</div>
+          </div>
+          <div class="rm-item current">
+            <div class="rm-phase">● NOW · v1.1.a</div>
+            <div class="rm-title">MVP Launch</div>
+            <div class="rm-desc">GPS-карта, 120 мемов, ловля, коллекция, iOS + Android</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-phase">Q3 2026</div>
+            <div class="rm-title">PvP + Market</div>
+            <div class="rm-desc">Deck Flip ranked, P2P-маркет, GOMEME Wallet, IAP $GOMEME</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-phase">Q4 2026</div>
+            <div class="rm-title">Wave 2 + On-chain</div>
+            <div class="rm-desc">+130 мемов, вывод USDC, SPL/ERC-20 $GOMEME, KYC portal</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disclaimer + CTA -->
+    <section>
+      <div class="container">
+        <div class="disclaimer" style="margin-bottom:48px">
+          <strong>Дисклеймер.</strong> $GOMEME — игровая валюта, не инвестиционный продукт.
+          Нет гарантированной доходности. Вторичный рынок коллекционных предметов регулируется ToS.
+          Вывод требует KYC 18+. Apple/Google IAP — единственный способ покупки $GOMEME в приложении.
+          On-chain v2 — только после юридической проработки. Играй ответственно.
+        </div>
+
+        <div class="cta-block">
+          <h2>Готов ловить brainrot?</h2>
+          <p>Бесплатно. Без кошелька. Просто скачай и выходи на улицу.</p>
+          <a class="btn btn-primary" href="../install/index.html">Установить GOMEME</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>GOMEME · Italian Brainrot · v1.1.a</p>
+    <p style="margin-top:8px">
+      <a href="../install/index.html">Установка</a> ·
+      <a href="https://t.me/GO_MEME_APP_BOT" target="_blank" rel="noopener">@GO_MEME_APP_BOT</a>
+    </p>
+  </footer>
+</body>
+</html>
