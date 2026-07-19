@@ -497,14 +497,14 @@
           </p>
 
           <div class="sheet" style="margin-top:20px">
-            <p class="sheet-title">Confirm via Telegram</p>
+            <p class="sheet-title">Confirm airdrop registration</p>
             <form class="waitlist" id="waitlist-form" novalidate>
               <div class="waitlist-row">
                 <label class="sr-only" for="email" style="position:absolute;left:-9999px">Email</label>
                 <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
                 <button class="btn" type="submit" id="submit-btn">Confirm in Telegram</button>
               </div>
-              <p class="waitlist-note" id="form-note" role="status">Email → open bot → confirm. Only then you’re on the airdrop list.</p>
+              <p class="waitlist-note" id="form-note" role="status">1) Email → 2) Open bot → 3) Tap Confirm registration. Only then you’re on the airdrop list.</p>
               <div class="waitlist-meta">
                 <span>1 email = 1 Telegram</span>
                 <span>Genesis airdrop</span>
@@ -669,9 +669,9 @@
         }
 
         var url = "https://t.me/" + BOT + "?start=" + encodeURIComponent(payload);
-        note.textContent = "Opening Telegram… Tap Start to confirm. Without that you’re not on the airdrop list.";
+        note.textContent = "Opening Telegram… Tap Start, then Confirm registration. Without that you’re not on the airdrop list.";
         note.classList.add("ok");
-        btn.textContent = "Open Telegram";
+        btn.textContent = "Open Telegram again";
         window.location.href = url;
       });
     })();

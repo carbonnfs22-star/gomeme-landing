@@ -209,14 +209,14 @@
             GPS-охота на Italian Brainrot — тот же тёмный AR-апп, free to play. Успей в вайтлист до открытия.
           </p>
           <div class="sheet" style="margin-top:20px">
-            <p class="sheet-title">Подтверди в Telegram</p>
+            <p class="sheet-title">Подтверди регистрацию на airdrop</p>
             <form class="waitlist" id="waitlist-form" novalidate>
               <div class="waitlist-row">
                 <label for="email" style="position:absolute;left:-9999px">Email</label>
                 <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
                 <button class="btn" type="submit" id="submit-btn">Подтвердить в Telegram</button>
               </div>
-              <p class="waitlist-note" id="form-note" role="status">Email → бот → подтверждение. Без этого ты не в airdrop-листе.</p>
+              <p class="waitlist-note" id="form-note" role="status">1) Email → 2) Открой бота → 3) Жми Confirm registration. Без этого тебя нет в airdrop-листе.</p>
               <div class="waitlist-meta">
                 <span>1 email = 1 Telegram</span>
                 <span>Genesis airdrop</span>
@@ -376,9 +376,9 @@
           saveLocal(list);
         }
         var url = "https://t.me/" + BOT + "?start=" + encodeURIComponent(payload);
-        note.textContent = "Открываю Telegram… Нажми Start, чтобы подтвердить. Без этого тебя нет в airdrop-листе.";
+        note.textContent = "Открываю Telegram… Жми Start, потом Confirm registration. Без этого тебя нет в airdrop-листе.";
         note.classList.add("ok");
-        btn.textContent = "Открыть Telegram";
+        btn.textContent = "Открыть Telegram снова";
         window.location.href = url;
       });
     })();
