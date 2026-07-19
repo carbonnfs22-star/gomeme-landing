@@ -9,7 +9,9 @@
   <meta property="og:description" content="GPS-охота на мемы. Free to play. Успей в вайтлист до дропа." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0A0A0F" />
-  <link rel="icon" href="official/logo-1-mint-96.png" />
+  <link rel="icon" href="official/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="official/favicon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="official/apple-touch-icon.png" sizes="180x180" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -207,22 +209,16 @@
             GPS-охота на Italian Brainrot — тот же тёмный AR-апп, free to play. Успей в вайтлист до открытия.
           </p>
           <div class="sheet" style="margin-top:20px">
-            <p class="sheet-title">Забронируй место</p>
+            <p class="sheet-title">Подтверди в Telegram</p>
             <form class="waitlist" id="waitlist-form" novalidate>
               <div class="waitlist-row">
                 <label for="email" style="position:absolute;left:-9999px">Email</label>
                 <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
-                <button class="btn" type="submit" id="submit-btn">Войти</button>
+                <button class="btn" type="submit" id="submit-btn">Подтвердить в Telegram</button>
               </div>
-              <div class="extra-fields">
-                <input id="x_handle" name="x_handle" type="text" autocomplete="off" placeholder="X / Twitter (необяз.)" />
-                <input id="telegram" name="telegram" type="text" autocomplete="off" placeholder="Telegram @ (необяз.)" />
-              </div>
-              <input type="hidden" name="_subject" value="GOMEME waitlist signup" />
-              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
-              <p class="waitlist-note" id="form-note" role="status"></p>
+              <p class="waitlist-note" id="form-note" role="status">Email → бот → подтверждение. Без этого ты не в airdrop-листе.</p>
               <div class="waitlist-meta">
-                <span><strong id="spot-count">—</strong> в списке</span>
+                <span>1 email = 1 Telegram</span>
                 <span>Genesis airdrop</span>
                 <span>Без кошелька</span>
               </div>
@@ -309,8 +305,8 @@
         <div class="drop">
           <p class="section-label" style="margin-bottom:0">Скоро открытие</p>
           <h2>Забронируй место.</h2>
-          <p>Когда дропнем — вайтлист заходит первым. Оставь email — напишем в момент доступа.</p>
-          <a class="btn" href="#waitlist" style="justify-self:start">К вайтлисту</a>
+          <p>Когда дропнем — вайтлист заходит первым. Email → подтверждение в Telegram — только так попадаешь в genesis airdrop.</p>
+          <a class="btn" href="#waitlist" style="justify-self:start">Подтвердить в Telegram</a>
         </div>
         <p class="legal">
           GOMEME — free-to-play локационная игра. Внутриигровые валюты и будущие токен-фичи не являются инвестсоветом.
@@ -331,75 +327,59 @@
 
   <script>
     (function () {
-      var ENDPOINT = "https://formsubmit.co/ajax/carbonnfs22@gmail.com";
-      var STORAGE_KEY = "gomeme_waitlist_v1";
-      var BASE_COUNT = 128;
+      var BOT = "GO_MEME_APP_BOT";
+      var STORAGE_KEY = "gomeme_waitlist_v2";
       var form = document.getElementById("waitlist-form");
       var note = document.getElementById("form-note");
       var btn = document.getElementById("submit-btn");
-      var spot = document.getElementById("spot-count");
-      function loadLocal() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch (e) { return []; } }
-      function saveLocal(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
-      function refreshCount() {
-        var n = BASE_COUNT + loadLocal().length;
-        var boost = 0;
-        try { boost = Number(sessionStorage.getItem("gomeme_wl_seen") || "0"); } catch (e) {}
-        spot.textContent = (n + boost).toLocaleString("ru-RU");
+
+      function encodeStartPayload(email) {
+        var e = String(email || "").trim().toLowerCase();
+        var b64 = btoa(unescape(encodeURIComponent(e)))
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_")
+          .replace(/=+$/, "");
+        var payload = "wl_" + b64;
+        return payload.length <= 64 ? payload : "waitlist";
       }
-      refreshCount();
+
+      function loadLocal() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+        catch (e) { return []; }
+      }
+      function saveLocal(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+
       var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) { if (entry.isIntersecting) entry.target.classList.add("in"); });
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) entry.target.classList.add("in");
+        });
       }, { threshold: 0.2 });
       document.querySelectorAll(".tile").forEach(function (el, i) {
         el.style.transitionDelay = i * 0.08 + "s";
         observer.observe(el);
       });
-      form.addEventListener("submit", async function (e) {
+
+      form.addEventListener("submit", function (e) {
         e.preventDefault();
-        note.textContent = "";
         note.className = "waitlist-note";
         var email = (form.email.value || "").trim().toLowerCase();
-        var x = (form.x_handle.value || "").trim();
-        var tg = (form.telegram.value || "").trim();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           note.textContent = "Введи корректный email.";
           note.classList.add("err");
           form.email.focus();
           return;
         }
+        var payload = encodeStartPayload(email);
         var list = loadLocal();
-        if (list.some(function (r) { return r.email === email; })) {
-          note.textContent = "Ты уже в вайтлисте на этом устройстве.";
-          note.classList.add("ok");
-          return;
+        if (!list.some(function (r) { return r.email === email; })) {
+          list.push({ email: email, at: new Date().toISOString(), pending: true });
+          saveLocal(list);
         }
-        btn.disabled = true;
-        btn.textContent = "…";
-        var remoteOk = false;
-        try {
-          var res = await fetch(ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify({
-              email: email, x_handle: x || "—", telegram: tg || "—",
-              source: "gomeme-landing-ru", _subject: "GOMEME waitlist signup",
-            }),
-          });
-          remoteOk = res.ok;
-        } catch (err) { remoteOk = false; }
-        list.push({ email: email, x: x, telegram: tg, at: new Date().toISOString(), synced: remoteOk });
-        saveLocal(list);
-        refreshCount();
-        form.reset();
-        btn.disabled = false;
-        btn.textContent = "Войти";
-        if (remoteOk) {
-          note.textContent = "Ты в списке. Напишем, когда откроем early access.";
-          note.classList.add("ok");
-        } else {
-          note.textContent = "Сохранено на устройстве. Если это первый signup — подтверди FormSubmit на carbonnfs22@gmail.com или напиши @GO_MEME_APP_BOT.";
-          note.classList.add("err");
-        }
+        var url = "https://t.me/" + BOT + "?start=" + encodeURIComponent(payload);
+        note.textContent = "Открываю Telegram… Нажми Start, чтобы подтвердить. Без этого тебя нет в airdrop-листе.";
+        note.classList.add("ok");
+        btn.textContent = "Открыть Telegram";
+        window.location.href = url;
       });
     })();
   </script>
