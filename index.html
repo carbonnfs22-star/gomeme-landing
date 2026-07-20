@@ -499,14 +499,16 @@
           <div class="sheet" style="margin-top:20px">
             <p class="sheet-title">Confirm airdrop registration</p>
             <form class="waitlist" id="waitlist-form" novalidate>
-              <div class="waitlist-row">
+              <div class="extra-fields">
                 <label class="sr-only" for="email" style="position:absolute;left:-9999px">Email</label>
                 <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
-                <button class="btn" type="submit" id="submit-btn">Confirm in Telegram</button>
+                <label class="sr-only" for="twitter" style="position:absolute;left:-9999px">Twitter / X</label>
+                <input id="twitter" name="twitter" type="text" required autocomplete="username" inputmode="text" placeholder="@twitter" />
               </div>
-              <p class="waitlist-note" id="form-note" role="status">1) Email → 2) Open bot → 3) Tap Confirm registration. Only then you’re on the airdrop list.</p>
+              <button class="btn" type="submit" id="submit-btn" style="width:100%;height:50px">Confirm in Telegram</button>
+              <p class="waitlist-note" id="form-note" role="status">1) Email + Twitter/X → 2) Confirm in Telegram. Only then you’re on the airdrop list.</p>
               <div class="waitlist-meta">
-                <span>1 email = 1 Telegram</span>
+                <span>Email + Twitter + Telegram</span>
                 <span>Genesis airdrop</span>
                 <span>No wallet needed</span>
               </div>
@@ -594,7 +596,7 @@
         <div class="drop">
           <p class="section-label" style="margin-bottom:0">Open soon</p>
           <h2>Save your spot.</h2>
-          <p>When we drop, waitlist goes first. Enter email → confirm in Telegram — that’s the only way onto the genesis airdrop list.</p>
+          <p>When we drop, waitlist goes first. Email + Twitter/X → confirm in Telegram — that’s the only way onto the genesis airdrop list.</p>
           <a class="btn" href="#waitlist" style="justify-self:start">Confirm via Telegram</a>
         </div>
         <p class="legal">
@@ -608,7 +610,7 @@
       <p>GOMEME · Walk-to-catch Italian Brainrot</p>
       <div class="row">
         <a href="ru.html">Русский</a>
-        <a href="https://t.me/GO_MEME_APP_BOT" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://t.me/GOMEME_WHITELIST_BOT" target="_blank" rel="noopener">Telegram</a>
         <a href="https://meme-quest-go-main.vercel.app" target="_blank" rel="noopener">Play preview</a>
       </div>
     </footer>
@@ -616,21 +618,50 @@
 
   <script>
     (function () {
-      var BOT = "GO_MEME_APP_BOT";
-      var STORAGE_KEY = "gomeme_waitlist_v2";
+      var BOT = "GOMEME_WHITELIST_BOT";
+      var STORAGE_KEY = "gomeme_waitlist_v3";
 
       var form = document.getElementById("waitlist-form");
       var note = document.getElementById("form-note");
       var btn = document.getElementById("submit-btn");
 
-      function encodeStartPayload(email) {
-        var e = String(email || "").trim().toLowerCase();
-        var b64 = btoa(unescape(encodeURIComponent(e)))
+      function b64url(s) {
+        return btoa(unescape(encodeURIComponent(s)))
           .replace(/\+/g, "-")
           .replace(/\//g, "_")
           .replace(/=+$/, "");
-        var payload = "wl_" + b64;
-        return payload.length <= 64 ? payload : "waitlist";
+      }
+
+      function normalizeTwitter(v) {
+        var raw = String(v || "").trim();
+        if (!raw) return null;
+        raw = raw.split("?")[0].split("#")[0].replace(/\/+$/, "");
+        var prefixes = [
+          "https://twitter.com/", "http://twitter.com/",
+          "https://x.com/", "http://x.com/",
+          "twitter.com/", "x.com/", "@"
+        ];
+        for (var i = 0; i < prefixes.length; i++) {
+          var p = prefixes[i];
+          if (raw.toLowerCase().indexOf(p.toLowerCase()) === 0) {
+            raw = raw.slice(p.length);
+            break;
+          }
+        }
+        raw = raw.replace(/^@/, "").split("/")[0];
+        if (!/^[A-Za-z0-9_]{1,15}$/.test(raw)) return null;
+        return raw.toLowerCase();
+      }
+
+      function encodeStartPayload(email, twitter) {
+        var e = String(email || "").trim().toLowerCase();
+        var tw = normalizeTwitter(twitter);
+        if (tw) {
+          var both = "w2_" + b64url(e + "|" + tw);
+          if (both.length <= 64) return both;
+        }
+        var only = "wl_" + b64url(e);
+        return only.length <= 64 ? only : "waitlist";
       }
 
       function loadLocal() {
@@ -661,15 +692,23 @@
           return;
         }
 
-        var payload = encodeStartPayload(email);
+        var twitter = normalizeTwitter(form.twitter.value);
+        if (!twitter) {
+          note.textContent = "Enter a valid Twitter/X @handle.";
+          note.classList.add("err");
+          form.twitter.focus();
+          return;
+        }
+
+        var payload = encodeStartPayload(email, twitter);
         var list = loadLocal();
         if (!list.some(function (r) { return r.email === email; })) {
-          list.push({ email: email, at: new Date().toISOString(), pending: true });
+          list.push({ email: email, twitter: twitter, at: new Date().toISOString(), pending: true });
           saveLocal(list);
         }
 
         var url = "https://t.me/" + BOT + "?start=" + encodeURIComponent(payload);
-        note.textContent = "Opening Telegram… Tap Start, then Confirm registration. Without that you’re not on the airdrop list.";
+        note.textContent = "Opening Telegram… Tap Start → Confirm. Without that you’re not on the airdrop list.";
         note.classList.add("ok");
         btn.textContent = "Open Telegram again";
         window.location.href = url;
