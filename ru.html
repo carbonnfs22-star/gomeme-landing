@@ -29,6 +29,8 @@
       --mint-line: rgba(94, 234, 212, 0.38);
       --lime: #00e676;
       --pink: #ff3d81; /* только мелкий акцент, не UI */
+      --purple: #7c5cff;
+      --gold: #ffb070;
       --font-display: "Poppins", system-ui, sans-serif;
       --font: "Inter", system-ui, sans-serif;
       --radius: 18px;
@@ -81,8 +83,14 @@
       box-shadow: 0 0 24px rgba(94, 234, 212, 0.4);
       transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
     }
-    .btn:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 0 32px rgba(94, 234, 212, 0.55); }
+      .btn:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 0 32px rgba(94, 234, 212, 0.55); }
     .btn:disabled { opacity: 0.55; cursor: wait; transform: none; }
+    .btn-ghost {
+      background: var(--mint-soft);
+      color: var(--mint);
+      border: 1px solid var(--mint-line);
+      box-shadow: none;
+    }
     .hero { width: min(720px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 8px; display: grid; gap: 22px; }
     .chip {
       display: inline-flex; align-items: center; gap: 8px; width: fit-content;
@@ -162,6 +170,157 @@
     .rarity figure[data-r="exotic"] { box-shadow: 0 10px 24px rgba(0,0,0,0.4), 0 0 26px rgba(192,132,252,0.45); }
     .rarity img { width: 100%; aspect-ratio: 9 / 14; object-fit: cover; }
     .rarity figcaption { text-align: center; padding: 10px 8px 12px; font-family: var(--font-display); font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: rgba(0,0,0,0.35); }
+    .tk-peg {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-display); font-size: 11px; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--lime); background: rgba(0, 230, 118, 0.1);
+      border: 1px solid rgba(0, 230, 118, 0.35); border-radius: 999px;
+      padding: 6px 12px; margin-bottom: 18px;
+    }
+    .tk-peg strong { color: var(--text); letter-spacing: 0.04em; }
+    .tk-board {
+      display: grid; gap: 22px; padding: 22px 18px;
+      background:
+        radial-gradient(ellipse 70% 60% at 0% 0%, rgba(94, 234, 212, 0.12), transparent 55%),
+        radial-gradient(ellipse 50% 40% at 100% 100%, rgba(124, 92, 255, 0.1), transparent 50%),
+        linear-gradient(180deg, #16161f 0%, #0f0f16 100%);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .tk-split { display: grid; gap: 28px; align-items: center; }
+    .tk-donut-wrap {
+      position: relative; width: min(280px, 72vw); aspect-ratio: 1;
+      margin: 0 auto; filter: drop-shadow(0 0 28px rgba(94, 234, 212, 0.18));
+    }
+    .tk-donut-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .tk-ring {
+      fill: none; stroke-width: 18; stroke-linecap: butt;
+      stroke-dasharray: 0 565.5;
+      transition: stroke-dasharray 1.1s cubic-bezier(0.22, 1, 0.36, 1), stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+      filter: drop-shadow(0 0 6px currentColor);
+    }
+    .tk-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 18; }
+    .tk-hub {
+      position: absolute; inset: 22%; display: grid; place-items: center; text-align: center;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 30%, #1c1c28, #0c0c12 70%);
+      border: 1px solid rgba(94, 234, 212, 0.22);
+      box-shadow: inset 0 0 24px rgba(94, 234, 212, 0.08), 0 0 32px rgba(0,0,0,0.45);
+      animation: tkPulse 3.2s ease-in-out infinite;
+    }
+    .tk-hub .sym {
+      font-family: var(--font-display); font-weight: 900; font-size: 28px; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #5eead4, #00e676 60%, #b2ff59);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .tk-hub .sub {
+      font-family: var(--font-display); font-size: 9px; font-weight: 800;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); margin-top: 2px;
+    }
+    @keyframes tkPulse {
+      0%, 100% { box-shadow: inset 0 0 24px rgba(94, 234, 212, 0.08), 0 0 28px rgba(94, 234, 212, 0.12); }
+      50% { box-shadow: inset 0 0 28px rgba(94, 234, 212, 0.14), 0 0 40px rgba(94, 234, 212, 0.28); }
+    }
+    .tk-legend { list-style: none; display: grid; gap: 8px; margin: 0; padding: 0; }
+    .tk-leg {
+      display: grid; grid-template-columns: 12px 1fr auto; gap: 12px; align-items: center;
+      padding: 12px 14px; border-radius: 14px;
+      background: rgba(255,255,255,0.03); border: 1px solid transparent;
+      cursor: default; opacity: 0; transform: translateX(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .tk-board.in .tk-leg { opacity: 1; transform: none; }
+    .tk-leg:hover, .tk-leg.active {
+      background: rgba(94, 234, 212, 0.06); border-color: rgba(94, 234, 212, 0.25);
+    }
+    .tk-dot { width: 12px; height: 12px; border-radius: 4px; box-shadow: 0 0 10px currentColor; }
+    .tk-leg h4 { font-family: var(--font-display); font-size: 13px; font-weight: 800; margin: 0 0 2px; }
+    .tk-leg p { margin: 0; font-size: 12px; color: var(--dim); line-height: 1.35; }
+    .tk-pct {
+      font-family: var(--font-display); font-weight: 900; font-size: 18px;
+      letter-spacing: -0.02em; color: var(--text); min-width: 3.2ch; text-align: right;
+    }
+    .tk-pct span { color: var(--dim); font-size: 12px; font-weight: 700; }
+    .tk-flow {
+      display: grid; gap: 10px; opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
+    }
+    .tk-board.in .tk-flow { opacity: 1; transform: none; }
+    .tk-flow-label {
+      font-family: var(--font-display); font-size: 10px; font-weight: 800;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--mint);
+    }
+    .tk-pipeline {
+      display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 8px; align-items: stretch;
+    }
+    .tk-node {
+      position: relative; overflow: hidden; padding: 14px 12px; border-radius: 16px; text-align: center;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    }
+    .tk-node.earn { border-color: rgba(0, 230, 118, 0.35); background: rgba(0, 230, 118, 0.07); }
+    .tk-node.token {
+      border-color: rgba(94, 234, 212, 0.45);
+      background: linear-gradient(160deg, rgba(94, 234, 212, 0.16), rgba(0, 230, 118, 0.06));
+      box-shadow: 0 0 24px rgba(94, 234, 212, 0.15);
+    }
+    .tk-node.sink { border-color: rgba(255, 61, 129, 0.35); background: rgba(255, 61, 129, 0.07); }
+    .tk-node .ico { font-size: 18px; margin-bottom: 6px; display: block; line-height: 1; }
+    .tk-node h4 { font-family: var(--font-display); font-size: 12px; font-weight: 800; letter-spacing: 0.04em; margin-bottom: 4px; }
+    .tk-node p { font-size: 11px; color: var(--dim); line-height: 1.35; margin: 0; }
+    .tk-arrow {
+      align-self: center; width: 28px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--mint), transparent);
+      position: relative; overflow: visible;
+    }
+    .tk-arrow::after {
+      content: ""; position: absolute; right: -2px; top: 50%; transform: translateY(-50%);
+      border: 5px solid transparent; border-left-color: var(--mint);
+    }
+    .tk-arrow::before {
+      content: ""; position: absolute; left: 0; top: 50%; width: 8px; height: 8px;
+      margin-top: -4px; border-radius: 50%; background: var(--mint);
+      box-shadow: 0 0 10px var(--mint); animation: tkDash 1.6s linear infinite;
+    }
+    @keyframes tkDash {
+      0% { left: 0; opacity: 0; } 20% { opacity: 1; } 100% { left: calc(100% - 4px); opacity: 0; }
+    }
+    .tk-metrics {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.55s ease 0.25s, transform 0.55s ease 0.25s;
+    }
+    .tk-board.in .tk-metrics { opacity: 1; transform: none; }
+    .tk-metric {
+      padding: 14px; border-radius: 14px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    }
+    .tk-metric .v {
+      font-family: var(--font-display); font-weight: 900; font-size: 22px;
+      letter-spacing: -0.03em; color: var(--mint); line-height: 1.1;
+    }
+    .tk-metric .k { font-size: 12px; color: var(--dim); margin-top: 4px; line-height: 1.35; }
+    .tk-note { font-size: 12px; color: var(--dim); line-height: 1.5; margin-top: 2px; }
+    @media (min-width: 720px) {
+      .tk-split { grid-template-columns: 0.95fr 1.05fr; gap: 36px; }
+      .tk-metrics { grid-template-columns: repeat(4, 1fr); }
+      .tk-board { padding: 28px 26px; }
+    }
+    @media (max-width: 520px) {
+      .tk-pipeline { grid-template-columns: 1fr; gap: 6px; }
+      .tk-arrow {
+        width: 2px; height: 22px; margin: 0 auto;
+        background: linear-gradient(180deg, transparent, var(--mint), transparent);
+      }
+      .tk-arrow::after {
+        right: 50%; top: auto; bottom: -2px; transform: translateX(50%);
+        border: 5px solid transparent; border-top-color: var(--mint); border-left-color: transparent;
+      }
+      .tk-arrow::before { animation: tkDashV 1.6s linear infinite; left: 50%; margin-left: -4px; top: 0; }
+    }
+    @keyframes tkDashV {
+      0% { top: 0; opacity: 0; } 20% { opacity: 1; } 100% { top: calc(100% - 4px); opacity: 0; }
+    }
     .drop {
       border-radius: var(--radius-lg); padding: 28px 20px;
       background: radial-gradient(ellipse 90% 80% at 100% 0%, rgba(94, 234, 212, 0.22), transparent 55%), linear-gradient(165deg, #1a1a24, #0e0e14 72%);
@@ -197,7 +356,10 @@
         <img src="official/logo-1-mint-96.png?v=11" width="36" height="36" alt="" />
         <span class="brand-name">GO<span>MEME</span></span>
       </a>
-      <a class="btn" href="#waitlist">В вайтлист</a>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a class="btn btn-ghost" href="#tokenomics" style="padding:10px 14px">$GM</a>
+        <a class="btn" href="#waitlist">В вайтлист</a>
+      </div>
     </nav>
 
     <header class="hero" id="waitlist">
@@ -303,6 +465,121 @@
         </div>
       </section>
 
+      <section class="section" id="tokenomics">
+        <p class="section-label">Токеномика</p>
+        <h2>$GM — ходи и зарабатывай.<br />Трать, чтобы расти.</h2>
+        <p class="section-lead">Прозрачный луп: фарм на улице → синки в игре → burn на маркете. Пег. Без «чёрных ящиков».</p>
+        <p class="tk-peg"><strong>$GM</strong> · 1 $GM = $1 USD · Листинг Phase&nbsp;2 — в плане</p>
+
+        <div class="tk-board" id="tk-board" data-tk>
+          <div class="tk-split">
+            <div class="tk-donut-wrap" aria-hidden="true">
+              <svg viewBox="0 0 200 200" role="img">
+                <circle class="tk-track" cx="100" cy="100" r="90" />
+                <circle class="tk-ring" data-pct="45" cx="100" cy="100" r="90" stroke="#5eead4" style="color:#5eead4" />
+                <circle class="tk-ring" data-pct="15" cx="100" cy="100" r="90" stroke="#00e676" style="color:#00e676" />
+                <circle class="tk-ring" data-pct="15" cx="100" cy="100" r="90" stroke="#7c5cff" style="color:#7c5cff" />
+                <circle class="tk-ring" data-pct="13" cx="100" cy="100" r="90" stroke="#ffb070" style="color:#ffb070" />
+                <circle class="tk-ring" data-pct="12" cx="100" cy="100" r="90" stroke="#ff3d81" style="color:#ff3d81" />
+              </svg>
+              <div class="tk-hub">
+                <div>
+                  <div class="sym">$GM</div>
+                  <div class="sub">1 : 1 USD</div>
+                </div>
+              </div>
+            </div>
+
+            <ul class="tk-legend" aria-label="Плановое распределение $GM">
+              <li class="tk-leg" data-i="0" style="transition-delay:0.05s">
+                <span class="tk-dot" style="background:#5eead4;color:#5eead4"></span>
+                <div>
+                  <h4>Игроки и walk-rewards</h4>
+                  <p>Дневной фарм, лов, PvP — топливо для синков.</p>
+                </div>
+                <div class="tk-pct" data-count="45">0<span>%</span></div>
+              </li>
+              <li class="tk-leg" data-i="1" style="transition-delay:0.12s">
+                <span class="tk-dot" style="background:#00e676;color:#00e676"></span>
+                <div>
+                  <h4>Genesis airdrop</h4>
+                  <p>Вайтлист и ранние охотники — confirm в Telegram.</p>
+                </div>
+                <div class="tk-pct" data-count="15">0<span>%</span></div>
+              </li>
+              <li class="tk-leg" data-i="2" style="transition-delay:0.19s">
+                <span class="tk-dot" style="background:#7c5cff;color:#7c5cff"></span>
+                <div>
+                  <h4>Treasury и экосистема</h4>
+                  <p>Ивенты, партнёры, резерв ликвидности.</p>
+                </div>
+                <div class="tk-pct" data-count="15">0<span>%</span></div>
+              </li>
+              <li class="tk-leg" data-i="3" style="transition-delay:0.26s">
+                <span class="tk-dot" style="background:#ffb070;color:#ffb070"></span>
+                <div>
+                  <h4>Liquidity</h4>
+                  <p>Глубина рынка к листингу Phase&nbsp;2.</p>
+                </div>
+                <div class="tk-pct" data-count="13">0<span>%</span></div>
+              </li>
+              <li class="tk-leg" data-i="4" style="transition-delay:0.33s">
+                <span class="tk-dot" style="background:#ff3d81;color:#ff3d81"></span>
+                <div>
+                  <h4>Команда (vesting)</h4>
+                  <p>Cliff + vest — в долгую.</p>
+                </div>
+                <div class="tk-pct" data-count="12">0<span>%</span></div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="tk-flow">
+            <p class="tk-flow-label">Экономический луп</p>
+            <div class="tk-pipeline" aria-label="Earn spend burn">
+              <div class="tk-node earn">
+                <span class="ico" aria-hidden="true">👟</span>
+                <h4>Earn</h4>
+                <p>Ходьба · лов · продажа · PvP</p>
+              </div>
+              <div class="tk-arrow" aria-hidden="true"></div>
+              <div class="tk-node token">
+                <span class="ico" aria-hidden="true">◎</span>
+                <h4>Кошелёк $GM</h4>
+                <p>In-game ledger с пегом</p>
+              </div>
+              <div class="tk-arrow" aria-hidden="true"></div>
+              <div class="tk-node sink">
+                <span class="ico" aria-hidden="true">🔥</span>
+                <h4>Sinks и burn</h4>
+                <p>Апгрейды · крафт · fee 8%</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tk-metrics">
+            <div class="tk-metric">
+              <div class="v">8%</div>
+              <div class="k">Комиссия маркета → treasury / burn</div>
+            </div>
+            <div class="tk-metric">
+              <div class="v">≥70%</div>
+              <div class="k">Дневного фарма уходит в sinks</div>
+            </div>
+            <div class="tk-metric">
+              <div class="v">≤20%</div>
+              <div class="k">Макс. вывод / год от supply</div>
+            </div>
+            <div class="tk-metric">
+              <div class="v">20k</div>
+              <div class="k">Шагов в день — жёсткий кап</div>
+            </div>
+          </div>
+
+          <p class="tk-note">Allocation — план Phase&nbsp;2 (on-chain листинг). Сейчас $GM — внутриигровая валюта. Не инвестсовет, без гарантий дохода.</p>
+        </div>
+      </section>
+
       <section class="section" id="join">
         <div class="drop">
           <p class="section-label" style="margin-bottom:0">Скоро открытие</p>
@@ -389,6 +666,69 @@
         el.style.transitionDelay = i * 0.08 + "s";
         observer.observe(el);
       });
+
+      (function initTokenomics() {
+        var board = document.getElementById("tk-board");
+        if (!board) return;
+        var CIRC = 2 * Math.PI * 90;
+        var rings = board.querySelectorAll(".tk-ring");
+        var legs = board.querySelectorAll(".tk-leg");
+        var animated = false;
+        rings.forEach(function (ring) {
+          ring.style.strokeDasharray = "0 " + CIRC;
+        });
+        function animateDonut() {
+          if (animated) return;
+          animated = true;
+          board.classList.add("in");
+          var offset = 0;
+          rings.forEach(function (ring, i) {
+            var pct = parseFloat(ring.getAttribute("data-pct")) || 0;
+            var len = (pct / 100) * CIRC;
+            ring.style.strokeDasharray = len + " " + (CIRC - len);
+            ring.style.strokeDashoffset = String(-offset);
+            offset += len;
+            ring.style.transitionDelay = i * 0.12 + "s";
+          });
+          legs.forEach(function (leg) {
+            var pctEl = leg.querySelector(".tk-pct");
+            if (!pctEl) return;
+            var target = parseInt(pctEl.getAttribute("data-count"), 10) || 0;
+            var start = performance.now();
+            var dur = 900;
+            function tick(now) {
+              var t = Math.min(1, (now - start) / dur);
+              var eased = 1 - Math.pow(1 - t, 3);
+              pctEl.childNodes[0].nodeValue = String(Math.round(target * eased));
+              if (t < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+          });
+        }
+        legs.forEach(function (leg) {
+          leg.addEventListener("mouseenter", function () {
+            legs.forEach(function (l) { l.classList.remove("active"); });
+            leg.classList.add("active");
+            var idx = parseInt(leg.getAttribute("data-i"), 10);
+            rings.forEach(function (r, i) {
+              r.style.opacity = i === idx ? "1" : "0.35";
+            });
+          });
+          leg.addEventListener("mouseleave", function () {
+            leg.classList.remove("active");
+            rings.forEach(function (r) { r.style.opacity = "1"; });
+          });
+        });
+        var tkObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              animateDonut();
+              tkObs.disconnect();
+            }
+          });
+        }, { threshold: 0.25 });
+        tkObs.observe(board);
+      })();
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
