@@ -209,7 +209,8 @@
       grid-template-columns: 1fr auto;
       gap: 8px;
     }
-    .waitlist input {
+    .waitlist input[type="email"],
+    .waitlist input[type="text"] {
       width: 100%;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
@@ -219,8 +220,10 @@
       outline: 0;
       transition: border-color 0.2s ease, background 0.2s ease;
     }
-    .waitlist input::placeholder { color: var(--dim); }
-    .waitlist input:focus {
+    .waitlist input[type="email"]::placeholder,
+    .waitlist input[type="text"]::placeholder { color: var(--dim); }
+    .waitlist input[type="email"]:focus,
+    .waitlist input[type="text"]:focus {
       border-color: var(--mint-line);
       background: rgba(94, 234, 212, 0.06);
     }
@@ -228,6 +231,33 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
+    }
+    .social-gates {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .social-gates label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      line-height: 1.35;
+      min-width: 0;
+    }
+    .social-gates input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--mint);
+    }
+    .social-gates label > span {
+      min-width: 0;
+      flex: 1;
+      overflow-wrap: anywhere;
     }
     .waitlist-meta {
       display: flex;
@@ -702,13 +732,13 @@
                 <label class="sr-only" for="twitter" style="position:absolute;left:-9999px">Twitter / X</label>
                 <input id="twitter" name="twitter" type="text" required autocomplete="username" inputmode="text" placeholder="@twitter" />
               </div>
-              <div class="social-gates" style="display:grid;gap:10px;margin-top:12px">
-                <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);cursor:pointer;line-height:1.35">
-                  <input id="gate-tg" type="checkbox" required style="margin-top:3px;accent-color:var(--mint)" />
+              <div class="social-gates">
+                <label>
+                  <input id="gate-tg" type="checkbox" required />
                   <span>Joined <a href="https://t.me/gomeme_app" target="_blank" rel="noopener" style="color:var(--mint);text-decoration:underline">Telegram @gomeme_app</a></span>
                 </label>
-                <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);cursor:pointer;line-height:1.35">
-                  <input id="gate-x" type="checkbox" required style="margin-top:3px;accent-color:var(--mint)" />
+                <label>
+                  <input id="gate-x" type="checkbox" required />
                   <span>Followed <a href="https://x.com/intent/follow?screen_name=GOMEME" target="_blank" rel="noopener" style="color:var(--mint);text-decoration:underline">X/Twitter @GOMEME</a></span>
                 </label>
               </div>
