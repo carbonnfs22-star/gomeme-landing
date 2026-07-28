@@ -70,7 +70,7 @@
     .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
     .brand img {
       width: 36px; height: 36px; border-radius: 0; background: transparent; border: 0;
-      box-shadow: none; filter: drop-shadow(0 0 10px rgba(94, 234, 212, 0.45));
+      box-shadow: none; filter: none; /* no glow — WebKit square plate */
     }
     .brand-name { font-family: var(--font-display); font-weight: 900; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; }
     .brand-name span { color: var(--mint); }
@@ -379,7 +379,7 @@
   <div class="wrap">
     <nav class="nav" aria-label="Навигация">
       <a class="brand" href="#">
-        <img src="official/logo-1-mint-96.png?v=12" width="36" height="36" alt="" />
+        <img src="official/logo-1-mint-96.png?v=13" width="36" height="36" alt="" />
         <span class="brand-name">GO<span>MEME</span></span>
       </a>
       <div style="display:flex;gap:8px;align-items:center">

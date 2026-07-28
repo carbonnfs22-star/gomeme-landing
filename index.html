@@ -90,12 +90,12 @@
     .brand img {
       width: 36px;
       height: 36px;
-      /* cutout on page bg — drop-shadow follows alpha (box-shadow = square plate) */
+      /* true cutout PNG — no filter/shadow (WebKit draws a square plate) */
       border-radius: 0;
       background: transparent;
       border: 0;
       box-shadow: none;
-      filter: drop-shadow(0 0 10px rgba(94, 234, 212, 0.45));
+      filter: none;
     }
     .brand-name {
       font-family: var(--font-display);
@@ -704,7 +704,7 @@
   <div class="wrap">
     <nav class="nav" aria-label="Primary">
       <a class="brand" href="#">
-        <img src="official/logo-1-mint-96.png?v=12" width="36" height="36" alt="" />
+        <img src="official/logo-1-mint-96.png?v=13" width="36" height="36" alt="" />
         <span class="brand-name">GO<span>MEME</span></span>
       </a>
       <div style="display:flex;gap:8px;align-items:center">
