@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>GOMEME — Перевод $GM на кошелёк</title>
+  <meta name="description" content="Авторизация и перевод $GM на внешний кошелёк. Откроется после листинга токена." />
+  <meta name="theme-color" content="#0A0A0F" />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="official/favicon.ico?v=10" sizes="any" />
+  <link rel="icon" type="image/png" href="official/favicon-192.png?v=10" sizes="192x192" />
+  <link rel="apple-touch-icon" href="official/apple-touch-icon.png?v=10" sizes="180x180" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --card: #14141f;
+      --border: #2a2a3a;
+      --text: #ffffff;
+      --muted: #8b8ba3;
+      --mint: #5eead4;
+      --mint-soft: rgba(94, 234, 212, 0.16);
+      --mint-line: rgba(94, 234, 212, 0.38);
+      --lime: #00e676;
+      --danger: #ff5c7a;
+      --font-display: "Poppins", system-ui, sans-serif;
+      --font: "Inter", system-ui, sans-serif;
+      --radius: 18px;
+      --safe-b: env(safe-area-inset-bottom, 0px);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100svh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+    .atmosphere {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 55% at 85% -10%, rgba(94, 234, 212, 0.18), transparent 55%),
+        radial-gradient(ellipse 70% 45% at -10% 30%, rgba(0, 230, 118, 0.10), transparent 50%),
+        var(--bg);
+    }
+    .wrap { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 0 18px calc(40px + var(--safe-b)); }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; padding-top: max(14px, env(safe-area-inset-top));
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; }
+    .brand img { width: 36px; height: 36px; filter: drop-shadow(0 0 10px rgba(94,234,212,.35)); }
+    .brand span span { color: var(--mint); }
+    .nav-links { display: flex; gap: 10px; align-items: center; }
+    .link-muted { color: var(--muted); font-size: 0.9rem; }
+    .link-muted:hover { color: var(--mint); }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--mint-soft); border: 1px solid var(--mint-line);
+      color: var(--mint); font-size: 0.78rem; font-weight: 600;
+    }
+    h1 {
+      font-family: var(--font-display); font-weight: 900; font-size: clamp(1.75rem, 5vw, 2.2rem);
+      letter-spacing: -0.03em; margin: 16px 0 8px; line-height: 1.15;
+    }
+    .lead { color: var(--muted); font-size: 0.98rem; margin-bottom: 22px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
+    }
+    .card h2 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .card p.hint { color: var(--muted); font-size: 0.88rem; margin-bottom: 14px; }
+    label { display: block; font-size: 0.82rem; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+    input, textarea {
+      width: 100%; background: #0c0c12; border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text); padding: 12px 14px; outline: none;
+    }
+    input:focus, textarea:focus { border-color: var(--mint-line); box-shadow: 0 0 0 3px var(--mint-soft); }
+    textarea { min-height: 88px; resize: vertical; }
+    .field { margin-bottom: 12px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 100%; height: 50px; border: 0; border-radius: 14px;
+      background: linear-gradient(135deg, var(--mint), var(--lime));
+      color: #04140f; font-weight: 800; cursor: pointer;
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; filter: grayscale(0.2); }
+    .btn-ghost {
+      background: transparent; border: 1px solid var(--border); color: var(--text);
+      margin-top: 10px;
+    }
+    .status {
+      margin-top: 12px; padding: 10px 12px; border-radius: 12px;
+      background: rgba(0,230,118,.08); border: 1px solid rgba(0,230,118,.25);
+      color: var(--lime); font-size: 0.88rem; display: none;
+    }
+    .status.err { background: rgba(255,92,122,.08); border-color: rgba(255,92,122,.3); color: var(--danger); }
+    .status.show { display: block; }
+    .locked { margin-top: 8px; font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .balance {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 12px 14px; border-radius: 12px; background: #0c0c12;
+      border: 1px solid var(--border); margin-bottom: 14px;
+    }
+    .balance span { color: var(--muted); font-size: 0.85rem; }
+    .balance strong { font-family: var(--font-display); font-size: 1.35rem; color: var(--mint); }
+    .steps { color: var(--muted); font-size: 0.88rem; margin: 18px 0 8px; }
+    .steps ol { padding-left: 1.2rem; margin-top: 6px; }
+    .steps li { margin: 4px 0; }
+    footer { margin-top: 28px; text-align: center; color: var(--muted); font-size: 0.82rem; }
+    footer a { color: var(--mint); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <div class="wrap">
+    <nav class="nav" aria-label="Навигация">
+      <a class="brand" href="ru.html">
+        <img src="official/logo-1-mint-96.png?v=12" width="36" height="36" alt="" />
+        <span>GO<span>MEME</span></span>
+      </a>
+      <div class="nav-links">
+        <a class="link-muted" href="wallet.html">EN</a>
+        <a class="link-muted" href="ru.html">Главная</a>
+      </div>
+    </nav>
+
+    <p class="chip">Фаза 2 · Скоро</p>
+    <h1>Перевод $GM</h1>
+    <p class="lead">
+      Войди по ключу из игры и отправь $GM на свой внешний кошелёк.
+      Живые переводы откроются после листинга — страница уже готова к запуску.
+    </p>
+
+    <section class="card" id="auth-card">
+      <h2>1. Авторизация</h2>
+      <p class="hint">Те же 12 слов восстановления из приложения GOMEME. Сид-фразу на сервер не сохраняем.</p>
+      <form id="auth-form" novalidate>
+        <div class="field">
+          <label for="seed">Фраза восстановления (12 слов)</label>
+          <textarea id="seed" name="seed" autocomplete="off" spellcheck="false" placeholder="слово1 слово2 … слово12" required></textarea>
+        </div>
+        <button class="btn" type="submit" id="auth-btn">Открыть сессию</button>
+        <p class="status" id="auth-status" role="status"></p>
+      </form>
+    </section>
+
+    <section class="card hidden" id="transfer-card">
+      <h2>2. На кошелёк</h2>
+      <p class="hint">Вставь адрес назначения. Сеть и чейн объявим при листинге.</p>
+      <div class="balance">
+        <span>К выводу (превью)</span>
+        <strong id="balance-val">— $GM</strong>
+      </div>
+      <form id="transfer-form" novalidate>
+        <div class="field">
+          <label for="address">Адрес кошелька</label>
+          <input id="address" name="address" type="text" autocomplete="off" spellcheck="false" placeholder="0x… или Solana-адрес" required />
+        </div>
+        <div class="field">
+          <label for="amount">Сумма ($GM)</label>
+          <input id="amount" name="amount" type="number" min="1" step="1" placeholder="100" required />
+        </div>
+        <button class="btn" type="submit" id="transfer-btn" disabled>Перевод недоступен</button>
+        <button class="btn btn-ghost" type="button" id="logout-btn">Закрыть сессию</button>
+        <p class="locked" id="transfer-lock">
+          Ончейн-перевод ещё не включён. После листинга кнопка откроется для авторизованных игроков.
+        </p>
+        <p class="status" id="transfer-status" role="status"></p>
+      </form>
+    </section>
+
+    <div class="steps">
+      <strong style="color:var(--text)">Как будет работать</strong>
+      <ol>
+        <li>Играешь и фармишь $GM в приложении на айфоне.</li>
+        <li>Авторизуешься здесь по фразе восстановления.</li>
+        <li>После листинга — перевод на кошелёк (возможны KYC и лимиты).</li>
+      </ol>
+    </div>
+
+    <footer>
+      <p>Не инвестиционный совет. Доходность не гарантируется.</p>
+      <p style="margin-top:8px">
+        <a href="ru.html">Вайтлист</a> ·
+        <a href="privacy.html">Privacy</a> ·
+        <a href="https://t.me/gomeme_app" target="_blank" rel="noopener">Telegram</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var KEY = "gomeme_wallet_session_v1";
+      var authCard = document.getElementById("auth-card");
+      var transferCard = document.getElementById("transfer-card");
+      var authForm = document.getElementById("auth-form");
+      var transferForm = document.getElementById("transfer-form");
+      var authStatus = document.getElementById("auth-status");
+      var transferStatus = document.getElementById("transfer-status");
+      var balanceVal = document.getElementById("balance-val");
+      var TRANSFERS_LIVE = false;
+
+      function showStatus(el, msg, isErr) {
+        el.textContent = msg;
+        el.classList.add("show");
+        el.classList.toggle("err", !!isErr);
+      }
+
+      function normalizeSeed(raw) {
+        return String(raw || "").trim().toLowerCase().replace(/\s+/g, " ");
+      }
+
+      function wordCount(seed) {
+        if (!seed) return 0;
+        return seed.split(" ").filter(Boolean).length;
+      }
+
+      function sessionHash(seed) {
+        var h = 0;
+        for (var i = 0; i < seed.length; i++) h = ((h << 5) - h + seed.charCodeAt(i)) | 0;
+        return "gm_" + (h >>> 0).toString(16);
+      }
+
+      function unlock(seed) {
+        var id = sessionHash(seed);
+        try {
+          sessionStorage.setItem(KEY, JSON.stringify({ id: id, at: Date.now() }));
+        } catch (e) {}
+        authCard.classList.add("hidden");
+        transferCard.classList.remove("hidden");
+        balanceVal.textContent = "Ожидает $GM";
+        showStatus(authStatus, "Сессия открыта локально.", false);
+      }
+
+      function lock() {
+        try { sessionStorage.removeItem(KEY); } catch (e) {}
+        transferCard.classList.add("hidden");
+        authCard.classList.remove("hidden");
+        document.getElementById("seed").value = "";
+        authStatus.classList.remove("show");
+        transferStatus.classList.remove("show");
+      }
+
+      function restore() {
+        try {
+          var raw = sessionStorage.getItem(KEY);
+          if (!raw) return;
+          var data = JSON.parse(raw);
+          if (data && data.id) {
+            authCard.classList.add("hidden");
+            transferCard.classList.remove("hidden");
+            balanceVal.textContent = "Ожидает $GM";
+          }
+        } catch (e) {}
+      }
+
+      authForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var seed = normalizeSeed(document.getElementById("seed").value);
+        var n = wordCount(seed);
+        if (n !== 12) {
+          showStatus(authStatus, "Введи ровно 12 слов из фразы восстановления GOMEME.", true);
+          return;
+        }
+        unlock(seed);
+      });
+
+      transferForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!TRANSFERS_LIVE) {
+          showStatus(transferStatus, "Переводы ещё не включены. Вернись после листинга токена.", true);
+          return;
+        }
+        showStatus(transferStatus, "Бэкенд не подключён.", true);
+      });
+
+      document.getElementById("logout-btn").addEventListener("click", lock);
+      restore();
+    })();
+  </script>
+</body>
+</html>
